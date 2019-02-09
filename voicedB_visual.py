@@ -2,11 +2,6 @@ import pyaudio
 import struct
 import numpy as np
 import matplotlib.pyplot as plt
-#import tkinter as tk
-
-#import matplotlib.backends.tkagg as tkagg
-#from matplotlib.backends.backend_agg import FigureCanvasAgg
-
 
 Chunk = 1024*4
 Format = pyaudio.paInt16
@@ -28,16 +23,16 @@ fig, ax = plt.subplots()
 
 x = np.arange(0, 2*Chunk, 2)
 line, = ax.plot(x, np.random.rand(Chunk))
-ax.set_ylim(0, 255)
+ax.set_ylim(-255, 255)
 ax.set_xlim(0, Chunk)
+
+#fig.axis.Axis.setxscale("linear", 10)
+
 count = 1
 while True:
-    data = stream.read(Chunk)
-    data_int = np.array(struct.unpack(str(2*Chunk)+'B', data), dtype='b')[::2] + 127
+    data = stream.read(Chunk, exception_on_overflow = False)
+    data_int = np.array(struct.unpack(str(2*Chunk) + 'B', data), dtype = 'b')[::2]
     line.set_ydata(data_int)
     fig.canvas.draw()
-    plt.show()
+    fig.show()
     fig.canvas.flush_events()
-
-
-
