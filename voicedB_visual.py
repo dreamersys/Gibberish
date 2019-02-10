@@ -78,3 +78,4 @@ class voice_input():
             output=True,
             frames_per_buffer=self.CHUNK
         )
+        return stream

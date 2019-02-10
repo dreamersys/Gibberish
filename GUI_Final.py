@@ -5,12 +5,12 @@ import time
 import struct
 import threading
 import numpy as np
-#import Voice_to_Text
+import Voice_to_Text
 import voicedB_visual as voice
 import matplotlib.pyplot as plt
 import PIL
 from PIL import Image, ImageTk
-# from Object_detection_webcam import arm_detect
+from Object_detection_webcam import arm_detect
 
 WIDTH = 640 * 2
 HEIGHT = 533.33 * 2
@@ -41,6 +41,7 @@ def Start_Transcribing():
     thread_transcribe_sp = threading.Thread(target=Voice_to_Text.transcribe_speech)
     thread_transcribe_sp.start()
     print("Start recording")
+
 
 def intro():
     def open_help():
@@ -107,29 +108,43 @@ pause_image = PhotoImage(file="./Source_Image/pause.png")
 stop_image = PhotoImage(file="./Source_Image/stop.png")
 screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
 
-#Output repeted Word to
+# Output repeted Word to
 Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
 
 
-
 def chapter2():
-    """"
-        def show_frame():
-            global prev_time, prev_avg_cood
-            _, frame = video.read()
-            height, width = frame.shape[:2]
-            frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
-            frame = cv2.flip(frame, 1)
-            # print(prev_avg_cood)
-            img, prev_time, prev_avg_cood = arm_detect(frame, prev_time, prev_avg_cood)
-            # print(prev_avg_cood)
-            cv2image = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
-            img = PIL.Image.fromarray(cv2image)
-            imgtk = ImageTk.PhotoImage(image=img)
-            lmain.imgtk = imgtk
-            lmain.configure(image=imgtk)
-            lmain.after(10, show_frame)
-        """
+    def show_frame():
+        global prev_time, prev_avg_cood
+        _, frame = video.read()
+        height, width = frame.shape[:2]
+        frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
+        frame = cv2.flip(frame, 1)
+        # print(prev_avg_cood)
+        img, prev_time, prev_avg_cood = arm_detect(frame, prev_time, prev_avg_cood)
+        # print(prev_avg_cood)
+        cv2image = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
+        img = PIL.Image.fromarray(cv2image)
+        imgtk = ImageTk.PhotoImage(image=img)
+        lmain.imgtk = imgtk
+        lmain.configure(image=imgtk)
+        lmain.after(10, show_frame)
+    """
+    def show_frame():
+        global prev_time, prev_avg_cood
+        _, frame = video.read()
+        height, width = frame.shape[:2]
+        frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
+        frame = cv2.flip(frame, 1)
+        # print(prev_avg_cood)
+        img, prev_time, prev_avg_cood = arm_detect(frame, prev_time, prev_avg_cood)
+        # print(prev_avg_cood)
+        cv2image = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
+        img = PIL.Image.fromarray(cv2image)
+        imgtk = ImageTk.PhotoImage(image=img)
+        lmain.imgtk = imgtk
+        lmain.configure(image=imgtk)
+        lmain.after(10, show_frame)
+
     def btn_start(v_in):
         threadStart = threading.Thread(target=v_in.set_start_record())
         threadStart.start()
@@ -167,7 +182,7 @@ def chapter2():
                 fig.canvas.flush_events()
         # print the stat page
         v_in.print_amp_stat()
-
+    """
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
 
@@ -177,29 +192,36 @@ def chapter2():
     lower_frame = Frame(root, bd=10)
     lower_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.1, anchor="n")
 
-    start_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0, command=lambda: btn_start(v_in))
+    start_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
     start_button.place(relx=0.05, rely=0, relheight=1)
 
     # pause_image = PhotoImage(file="./Source_Image/pause.png")
-    pause_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0, command=lambda: btn_pause(v_in))
+    pause_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
     pause_button.place(relx=0.1, rely=0, relheight=1)
 
-    resume_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0, command=lambda: btn_resume(v_in))
+    resume_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
     resume_button.place(relx=0.15, rely=0, relheight=1)
 
     # stop_image = PhotoImage(file="./Source_Image/stop.png")
-    stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (root.destroy(),chapter3()))
+    stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (root.destroy(), chapter3()))
     stop_button.place(relx=0.2, rely=0, relheight=1)
 
     # screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
     screenshot_button = Button(lower_frame, image=screenshot_image, relief="flat")
     screenshot_button.place(relx=0.9, rely=0, relheight=1)
 
-    #wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
-    #wave_label.place(relx=0.5, rely=0.25)
+    wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
+    wave_label.place(relx=0.5, rely=0.25)
 
-    show_wave(v_in)
-    # show_frame()
+
+# show_frame()
+
+# wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
+# wave_label.place(relx=0.5, rely=0.25)
+
+# show_wave(v_in)
+    show_frame()
+
 
 def chapter3():
     class StatFrame(Tk):
@@ -237,13 +259,13 @@ def chapter3():
     class PageOne(Frame):
         def __init__(self, parent, controller):
             def button_tab():
-                button1 = Button(self, text="Overall", font=("Source Serif Variable",20),
+                button1 = Button(self, text="Overall", font=("Source Serif Variable", 20),
                                  command=lambda: controller.show_frame("PageOne"))
-                button2 = Button(self, text="Loudness",font=("Source Serif Variable",11),
+                button2 = Button(self, text="Loudness", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement",font=("Source Serif Variable",11),
+                button3 = Button(self, text="Movement", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageThree"))
-                button4 = Button(self, text="Speech",font=("Source Serif Variable",11),
+                button4 = Button(self, text="Speech", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageFour"))
                 button1.place(rely=0.88, relx=0, relwidth=0.25, relheight=0.12)
                 button2.place(rely=0.9, relx=0.25, relwidth=0.25, relheight=0.1)
@@ -254,20 +276,20 @@ def chapter3():
             canvas = Canvas(self, height=400 * 2, width=640 * 2)
             canvas.pack()
             self.controller = controller
-            label = Label(self, text="69", font=("Source Serif Variable",150), fg="#FF0000")
+            label = Label(self, text="69", font=("Source Serif Variable", 150), fg="#FF0000")
             label.place(relx=0.5, rely=0.4, anchor="n")
             button_tab()
 
     class PageTwo(Frame):
         def __init__(self, parent, controller):
             def button_tab():
-                button1 = Button(self, text="Overall",font=("Source Serif Variable",11),
+                button1 = Button(self, text="Overall", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageOne"))
-                button2 = Button(self, text="Loudness",font=("Source Serif Variable",20),
+                button2 = Button(self, text="Loudness", font=("Source Serif Variable", 20),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement",font=("Source Serif Variable",11),
+                button3 = Button(self, text="Movement", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageThree"))
-                button4 = Button(self, text="Speech",font=("Source Serif Variable",11),
+                button4 = Button(self, text="Speech", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageFour"))
                 button1.place(rely=0.9, relx=0, relwidth=0.25, relheight=0.1)
                 button2.place(rely=0.88, relx=0.25, relwidth=0.25, relheight=0.12)
@@ -283,13 +305,13 @@ def chapter3():
     class PageThree(Frame):
         def __init__(self, parent, controller):
             def button_tab():
-                button1 = Button(self, text="Overall",font=("Source Serif Variable",11),
+                button1 = Button(self, text="Overall", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageOne"))
-                button2 = Button(self, text="Loudness",font=("Source Serif Variable",11),
+                button2 = Button(self, text="Loudness", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement",font=("Source Serif Variable",20),
+                button3 = Button(self, text="Movement", font=("Source Serif Variable", 20),
                                  command=lambda: controller.show_frame("PageThree"))
-                button4 = Button(self, text="Speech",font=("Source Serif Variable",11),
+                button4 = Button(self, text="Speech", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageFour"))
                 button1.place(rely=0.9, relx=0, relwidth=0.25, relheight=0.1)
                 button2.place(rely=0.9, relx=0.25, relwidth=0.25, relheight=0.1)
@@ -305,33 +327,36 @@ def chapter3():
     class PageFour(Frame):
         def __init__(self, parent, controller):
             def button_tab():
-                button1 = Button(self, text="Overall",font=("Source Serif Variable",11),
+                button1 = Button(self, text="Overall", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageOne"))
-                button2 = Button(self, text="Loudness",font=("Source Serif Variable",11),
+                button2 = Button(self, text="Loudness", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement",font=("Source Serif Variable",11),
+                button3 = Button(self, text="Movement", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageThree"))
-                button4 = Button(self, text="Speech",font=("Source Serif Variable",20),
+                button4 = Button(self, text="Speech", font=("Source Serif Variable", 20),
                                  command=lambda: controller.show_frame("PageFour"))
                 button1.place(rely=0.9, relx=0, relwidth=0.25, relheight=0.1)
                 button2.place(rely=0.9, relx=0.25, relwidth=0.25, relheight=0.1)
                 button3.place(rely=0.9, relx=0.5, relwidth=0.25, relheight=0.1)
                 button4.place(rely=0.88, relx=0.75, relwidth=0.25, relheight=0.12)
+
             Frame.__init__(self, parent)
             self.controller = controller
-            titleLabel = Label(self, text="Speech to Text", font=("Source Serif Variable",25))
-            titleLabel.place(relx=0.5, rely=0.3, anchor="n")
+            titleLabel = Label(self, text="Speech to Text", font=("Source Serif Variable", 25))
+            titleLabel.place(relx=0.5, rely=0.1, anchor="n")
             with open("./Text.txt", "r") as f:
-                Label(self, text=f.read(), wraplength=500).place(relx=0.5, rely=0.4, anchor="n")
-            repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable",25))
-            repeatedLabel.place(relx=0.45, rely=0.8, anchor="n")
+                Label(self, text=f.read(), wraplength=500, font= ("Source Serif Variable", 15)).place(relx=0.5, rely=0.2, anchor="n")
+            repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable", 25))
+            repeatedLabel.place(relx=0.5, rely=0.8, anchor="n")
             with open("./Repeated.txt", "r") as f:
-                Label(self, text=f.read(), font=("Source Serif Variable",25),wraplength=500).place(relx=0.6, rely=0.8,anchor="n")
+                Label(self, text=f.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.65, rely=0.8,
+                                                                                                     anchor="n")
             button_tab()
 
     if __name__ == "__main__":
         app = StatFrame()
         app.mainloop()
+
 
 intro()
 root.mainloop()
