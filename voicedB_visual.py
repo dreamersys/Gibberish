@@ -59,10 +59,10 @@ class voice_input():
         plt.plot(*zip(*sorted(self.Amplot.items())))
 
         plt.show()
-        filename = input("Please enter the file name.")
+        #filename = input("Please enter the file name.")
 
         amp_stat_image_path = os.path.join(os.getcwd(), 'Source_Image/')
-        fig.savefig(amp_stat_image_path + filename + '.png')
+        fig.savefig(amp_stat_image_path + 'Gibberish_stats' + '.png')
         plt.close()
         return 0
 
