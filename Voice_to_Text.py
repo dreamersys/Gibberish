@@ -1,8 +1,6 @@
 from __future__ import division
-
 import re
 import sys
-
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
@@ -98,6 +96,9 @@ class MicrophoneStream(object):
 
             yield b''.join(data)
 
+forceQuit = 0
+def check_forceQuit():
+    forceQuit = 1
 
 def listen_print_loop(responses, file):
     """Iterates through server responses and prints them.
@@ -115,6 +116,7 @@ def listen_print_loop(responses, file):
     final one, print a newline to preserve the finalized transcription.
     """
     num_chars_printed = 0
+
 
     for response in responses:
 
@@ -152,6 +154,8 @@ def listen_print_loop(responses, file):
             # one of our keywords.
             if re.search(r'\b(exit|quit)\b', transcript, re.I):
                 print('Exiting..')
+                break
+            if(forceQuit == 1):
                 break
             num_chars_printed = 0
 

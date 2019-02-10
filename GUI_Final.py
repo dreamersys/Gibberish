@@ -10,7 +10,6 @@ import voicedB_visual as voice
 import matplotlib.pyplot as plt
 import PIL
 from PIL import Image, ImageTk
-#from Object_detection_webcam import arm_detect
 
 WIDTH = 640 * 2
 HEIGHT = 533.33 * 2
@@ -51,19 +50,30 @@ def intro():
             settings_button.place(relwidth=0, relheight=0)
             exit_button.place(relwidth=0, relheight=0)
 
+        def about_open():
+            about_open_frame.place(relwidth=1.55, relheight=1, anchor="n")
+            about_label = Label(about_open_frame,
+                                text="About:\n Made by D_Major\n Jerry Kuo, David Guo, Nathan Ng, Andy Wu\n Powered by: Google API, TencerFlow")
+            about_label.place(relx=0.7, rely=0.5)
+
+        def close_open():
+            about_open_frame.destroy()
+
         # arrow_image = PhotoImage(file="./Source_Image/arrow.png")
         # arrow_image = arrow_image.zoom(15)
         # arrow_image = arrow_image.subsample(30)
-        arrow_button = Button(root, image=help_image, relief=SUNKEN, command=close_help)
+        about_open_frame = Frame(root, bd=50, bg="#F1F1F1")
+        arrow_button = Button(root, image=help_image, relief="flat", command=lambda: (close_open(), close_help()))
         arrow_button.place(relx=0.77, rely=0.05, relheight=0.027)
         help_desk = Label(root, bg="#E5E5E5")
         help_desk.place(relx=0.8, relwidth=0.2, relheight=0.9)
-        about_button = Button(root, text="About")
-        tutorial_button = Button(root, text="Tutorial")
-        analyze_button = Button(root, text="Analyze")
-        history_button = Button(root, text="History")
-        settings_button = Button(root, text="Settings")
-        exit_button = Button(root, text="Exit")
+        about_button = Button(root, text="About", relief="flat", bg="#E5E5E5", font=("Merriweather", 15),
+                              command=about_open())
+        tutorial_button = Button(root, text="Tutorial", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
+        analyze_button = Button(root, text="Analyze", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
+        history_button = Button(root, text="History", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
+        settings_button = Button(root, text="Settings", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
+        exit_button = Button(root, text="Exit", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
         show_help_buttons()
 
     frame = Frame(root, bd=10)
@@ -71,13 +81,14 @@ def intro():
     lower_frame = Frame(root, bd=5)
     lower_frame.place(relx=0.5, rely=0.5, relwidth=1, relheight=0.5, anchor="n")
 
-    # logo_label = Label(frame, image=logo_image)
-    # logo_label.place(relwidth=1, relheight=1)
-    # help_image = PhotoImage(file="./Source_Image/3lines.png")
-    # help_image = help_image.zoom(15)
-    # help_image = help_image.subsample(30)
-    # help_button = Button(root, image=help_image, relief=SUNKEN, command=open_help)
-    # help_button.place(relx=0.92, rely=0.05, relheight=0.027)
+
+    logo_label = Label(frame, image=logo_image)
+    logo_label.place(relwidth=1, relheight=1)
+    help_image = PhotoImage(file="./Source_Image/3lines.png")
+    help_image = help_image.zoom(15)
+    help_image = help_image.subsample(30)
+    help_button = Button(root, image=help_image, relief="flat", command=open_help)
+    help_button.place(relx=0.92, rely=0.05, relheight=0.027)
 
     startButton = Button(lower_frame, text="Start", relief=SUNKEN, bg="#A2A2A2", command=lambda: (chapter2(),
                                                                                                   Start_Transcribing()),
@@ -96,9 +107,8 @@ pause_image = PhotoImage(file="./Source_Image/pause.png")
 stop_image = PhotoImage(file="./Source_Image/stop.png")
 screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
 
-# Output repeted Word to
-Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
 
+Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
 
 def chapter2():
     def show_frame():
@@ -106,25 +116,9 @@ def chapter2():
         _, frame = video.read()
         height, width = frame.shape[:2]
         frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
-        frame = cv2.flip(frame, 1)
+        img = cv2.flip(frame, 1)
         # print(prev_avg_cood)
-        img, prev_time, prev_avg_cood = arm_detect(frame, prev_time, prev_avg_cood)
-        # print(prev_avg_cood)
-        cv2image = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
-        img = PIL.Image.fromarray(cv2image)
-        imgtk = ImageTk.PhotoImage(image=img)
-        lmain.imgtk = imgtk
-        lmain.configure(image=imgtk)
-        lmain.after(10, show_frame)
-    """
-    def show_frame():
-        global prev_time, prev_avg_cood
-        _, frame = video.read()
-        height, width = frame.shape[:2]
-        frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
-        frame = cv2.flip(frame, 1)
-        # print(prev_avg_cood)
-        img, prev_time, prev_avg_cood = arm_detect(frame, prev_time, prev_avg_cood)
+        # img, prev_time, prev_avg_cood = arm_detect(img, prev_time, prev_avg_cood)
         # print(prev_avg_cood)
         cv2image = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
         img = PIL.Image.fromarray(cv2image)
@@ -132,7 +126,7 @@ def chapter2():
         lmain.imgtk = imgtk
         lmain.configure(image=imgtk)
         lmain.after(10, show_frame)
-"""
+  
 
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
@@ -154,22 +148,20 @@ def chapter2():
     resume_button.place(relx=0.15, rely=0, relheight=1)
 
     # stop_image = PhotoImage(file="./Source_Image/stop.png")
-    stop_button = Button(lower_frame, command=lambda: (voice.print_amp_stat(), root.destroy(), chapter3()))
+
+    stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (Voice_to_Text.check_forceQuit(), root.destroy(), chapter3()))
     stop_button.place(relx=0.2, rely=0, relheight=1)
 
     # screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
     screenshot_button = Button(lower_frame, relief="flat")
     screenshot_button.place(relx=0.9, rely=0, relheight=1)
 
-    wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
-    wave_label.place(relx=0.5, rely=0.25)
+    wave_label = Label(lower_frame, text="Start recording. Please talk. Say \"Quit\" or \"Exit\" to stop", bg="#ffffff",font=("Source Serif Variable", 25))
+    wave_label.place(relx=0.3, rely=0.25)
 
+    show_frame()
 
 # show_frame()
-
-# wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
-# wave_label.place(relx=0.5, rely=0.25)
-   # show_frame()
 
 
 def chapter3():
