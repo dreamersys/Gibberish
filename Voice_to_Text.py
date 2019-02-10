@@ -169,7 +169,7 @@ def transcribe_speech():
     # for a list of supported languages.
     language_code = 'en-US'  # a BCP-47 language tag
 
-    file = open("Test.txt", "w")
+    file = open("./Output Files/Test.txt", "w")
 
     print("Start recording. Please talk. Say \"Quit\" or \"Exit\" to stop")
 

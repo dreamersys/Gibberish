@@ -1,1 +1,1 @@
-exit
+Hello, my name is Cherry Kool-Aid test. This is a test. exit quit

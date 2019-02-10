@@ -6,6 +6,7 @@ import cv2
 import os
 import Voice_to_Text
 import threading
+import NLP
 import PIL
 from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
@@ -39,18 +40,28 @@ def Start_Transcribing():
 
 
 def intro():
+    def promptUser():
+        prompt = Toplevel(height=400, width=400)
+        prompt.title - ""
+        ask_label = Label(prompt, text="This will exit the window\n and take you to the stats page",
+                          font=("Source Serif Variable", 25))
+        ask_label.place(relx=0.5, rely=-0.2, relwidth=1, relheight=0.8, anchor="n")
+        yes_button = Button(prompt, text="Yes")
+        yes_button.place(relx=0.2, rely=0.65, relwidth=0.25, relheight=0.1, anchor="n",
+                         command=lambda: (root.destroy(), chapter3()))
+        no_button = Button(prompt, text="No")
+        no_button.place(relx=0.8, rely=0.65, relwidth=0.25, relheight=0.1, anchor="n")
+
     def open_help():
         def show_help_buttons():
             about_button.place(rely=0.025, relx=0.875, relwidth=0.1, relheight=0.05)
             history_button.place(rely=0.125, relx=0.875, relwidth=0.1, relheight=0.05)
             exit_button.place(rely=0.225, relx=0.875, relwidth=0.1, relheight=0.05)
-
         def close_help():
             arrow_button.destroy()
             help_desk.destroy()
             about_button.place(relwidth=0, relheight=0)
-            history_button.place(relwidth=0, relheight=0)
-            exit_button.place(relwidth=0, relheight=0)
+
 
         arrow_button = Button(root, image=help_image, relief="flat", command=close_help)
         arrow_button.place(relx=0.82, rely=0.05, relheight=0.027)
@@ -60,6 +71,19 @@ def intro():
         history_button = Button(root, text="History", relief="flat", bg="#E5E5E5", font=("Source Serif Variable", 15))
         exit_button = Button(root, text="Exit", relief="flat", bg="#E5E5E5", font=("Source Serif Variable", 15))
         show_help_buttons()
+
+        about_open_frame = Frame(root, bd=50, bg="#F1F1F1")
+
+        def about_open():
+            about_open_frame.place(relwidth=1.55, relheight=1, anchor="n")
+            about_label = Label(about_open_frame,
+                                text="About:\n Made by D_Major\n Jerry Kuo, David Guo, Nathan Ng, Andy Wu\n Powered by: Google API, TencerFlow",
+                                font=("Merriweather", 15))
+            about_label.place(relx=0.7, rely=0.5)
+
+        def about_close():
+            about_open_frame.destroy()
+
 
     frame = Frame(root)
     frame.place(relx=0.5, rely=0.1, relwidth=0.75, relheight=0.65, anchor="n")
@@ -74,11 +98,7 @@ def intro():
     help_button = Button(root, image=help_image, relief="flat", command=open_help)
     help_button.place(relx=0.92, rely=0.05, relheight=0.027)
 
-    startButton = Button(lower_frame, text="Start", relief="flat", command=lambda: (chapter2(),
-                                                                                                  Start_Transcribing(),
-                                                                                                  os.system(
-                                                                                                      "python voicedB_visual.py\\")
-                                                                                                  ),font=("Source Serif Variable", 30))
+    startButton = Button(lower_frame, text="Start", relief="flat", font=("Source Serif Variable", 20), command=lambda: (chapter2(),Start_Transcribing()))
     startButton.place(relx=0.40, rely=0.35, relwidth=0.2, relheight=0.2)
 
     version_label = Label(lower_frame, text="V1.0.0", font=("Source Serif Variable", 11))
@@ -87,12 +107,11 @@ def intro():
     team_name_label.place(relx=0.85, rely=0.90)
 
 
-pause_image = PhotoImage(file="./Source_Image/pause.png")
 stop_image = PhotoImage(file="./Source_Image/stop.png")
-screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
 
 # Output repeted Word to
-Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
+Voice_to_Text.count_repeated_words("./Output Files/Test.txt", "./Output Files/Repeated.txt")
+NLP.analyze_overall_speech_sentiment("./Output Files/Test.txt")
 
 
 def chapter2():
@@ -127,29 +146,25 @@ def chapter2():
     lower_frame = Frame(root, bd=10)
     lower_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.1, anchor="n")
 
-
-    stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (root.destroy(), chapter3()))
+    stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (root.destroy(),chapter3()))
     stop_button.place(relx=0.1, rely=0, relheight=1)
-    screenshot_button = Button(lower_frame, image=screenshot_image, relief="flat")
-    screenshot_button.place(relx=0.9, rely=0, relheight=1)
 
     wave_label = Label(lower_frame, text="Start recording. Please talk. Say \"Quit\" or \"Exit\" to stop",font=("Source Serif Variable", 25))
     wave_label.place(relx=0.5, rely=0.5, anchor="center")
 
     show_frame()
 
-    tot_value = 0
-    key_time = 0
-    for key, value in d_speed.items():
-        key_time = key
-        tot_value += value
-    score = tot_value/key_time
-    file = open("./speed.txt")
-    file.write(str(score))
+    # tot_value = 0
+    # key_time = 0
+    # for key, value in d_speed.items():
+    #     key_time = key
+    #     tot_value += value
+    # score = tot_value/key_time
+    # file = open("./speed.txt","w")
+    # file.write(str(score))
 
 
 def chapter3():
-    chapter2().showplot()
     class StatFrame(Tk):
         def __init__(self, *args, **kwargs):
             Tk.__init__(self, *args, **kwargs)
@@ -190,7 +205,7 @@ def chapter3():
                                  command=lambda: controller.show_frame("PageOne"))
                 button2 = Button(self, text="Loudness", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement", font=("Source Serif Variable", 11),
+                button3 = Button(self, text="Sentiment", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageThree"))
                 button4 = Button(self, text="Speech", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageFour"))
@@ -215,7 +230,7 @@ def chapter3():
                                  command=lambda: controller.show_frame("PageOne"))
                 button2 = Button(self, text="Loudness", font=("Source Serif Variable", 20),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement", font=("Source Serif Variable", 11),
+                button3 = Button(self, text="Sentiment", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageThree"))
                 button4 = Button(self, text="Speech", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageFour"))
@@ -238,7 +253,7 @@ def chapter3():
                                  command=lambda: controller.show_frame("PageOne"))
                 button2 = Button(self, text="Loudness", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement", font=("Source Serif Variable", 20),
+                button3 = Button(self, text="Sentiment", font=("Source Serif Variable", 20),
                                  command=lambda: controller.show_frame("PageThree"))
                 button4 = Button(self, text="Speech", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageFour"))
@@ -249,8 +264,11 @@ def chapter3():
 
             Frame.__init__(self, parent)
             self.controller = controller
-            label = Label(self, text="This is Movement Page", font=controller.title_font)
-            label.place(relx=0.5, rely=0.5, anchor="n")
+            sentimentLabel = Label(self, text="Sentiment:", font=("Source Serif Variable", 25, "bold"))
+            sentimentLabel.place(relx=0.5, rely=0.2, anchor="n")
+            with open("./Output Files/Attitude.txt", "r") as f:
+                Label(self, text=f.read(), font=("Source Serif Variable", 20), wraplength=500).place(relx=0.5, rely=0.4,
+                                                                                                     anchor="n")
             button_tab()
 
     class PageFour(Frame):
@@ -261,7 +279,7 @@ def chapter3():
                                  command=lambda: controller.show_frame("PageOne"))
                 button2 = Button(self, text="Loudness", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement", font=("Source Serif Variable", 11),
+                button3 = Button(self, text="Sentiment", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageThree"))
                 button4 = Button(self, text="Speech", font=("Source Serif Variable", 20),
                                  command=lambda: controller.show_frame("PageFour"))
@@ -274,13 +292,14 @@ def chapter3():
             self.controller = controller
             titleLabel = Label(self, text="Speech to Text", font=("Source Serif Variable", 25))
             titleLabel.place(relx=0.5, rely=0.3, anchor="n")
-            with open("./Test.txt", "r") as f:
-                Label(self, text=f.read(), wraplength=500).place(relx=0.5, rely=0.4, anchor="n")
+            with open("./Output Files/Test.txt", "r") as f:
+                Label(self, text=f.read(), wraplength=500, font=("Source Serif Variable", 15)).place(relx=0.5, rely=0.4, anchor="n")
             repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable", 25))
-            repeatedLabel.place(relx=0.45, rely=0.8, anchor="n")
-            with open("./Repeated.txt", "r") as f:
+            repeatedLabel.place(relx=0.4, rely=0.8, anchor="n")
+            with open("./Output Files/Repeated.txt", "r") as f:
                 Label(self, text=f.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.6, rely=0.8,
                                                                                                      anchor="n")
+
             button_tab()
 
     if __name__ == "__main__":
@@ -291,3 +310,4 @@ def chapter3():
 intro()
 
 root.mainloop()
+
