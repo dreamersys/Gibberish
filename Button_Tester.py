@@ -11,7 +11,7 @@ def btn_pause(v_in):
     threadPause.start()
 
 def btn_resume(v_in):
-    threadresume = threading.Thread(target=v_in.set_pause)
+    threadresume = threading.Thread(target=v_in.set_resume)
     threadresume.start()
 
 def btn_stop(v_in):
