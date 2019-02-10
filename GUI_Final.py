@@ -8,7 +8,8 @@ from Object_detection_webcam import arm_detect
 
 WIDTH = 640 * 2
 HEIGHT = 533.33 * 2
-timer = time.clock()
+prev_time = 0
+prev_avg_cood = [0, 0]
 video = cv2.VideoCapture(0)
 root = Tk()
 root.title("Gibberish")
@@ -84,11 +85,15 @@ screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
 
 def chapter2():
     def show_frame():
+        global prev_time, prev_avg_cood
         _, frame = video.read()
         height, width = frame.shape[:2]
         frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
         frame = cv2.flip(frame, 1)
-        cv2image = cv2.cvtColor(arm_detect(frame), cv2.COLOR_BGR2RGBA)
+        # print(prev_avg_cood)
+        img, prev_time, prev_avg_cood = arm_detect(frame, prev_time, prev_avg_cood)
+        # print(prev_avg_cood)
+        cv2image = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
         img = PIL.Image.fromarray(cv2image)
         imgtk = ImageTk.PhotoImage(image=img)
         lmain.imgtk = imgtk
@@ -126,6 +131,7 @@ def chapter2():
     wave_label.place(relx=0.5, rely=0.25)
 
     show_frame()
+
 
 def chapter3():
     class StatFrame(Tk):
