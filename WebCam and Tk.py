@@ -1,6 +1,6 @@
 import PIL
 from PIL import Image, ImageTk
-# import pytesseract
+import pytesseract
 import cv2
 from Tkinter import *
 
