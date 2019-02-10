@@ -10,7 +10,7 @@ import voicedB_visual as voice
 import matplotlib.pyplot as plt
 import PIL
 from PIL import Image, ImageTk
-from Object_detection_webcam import arm_detect
+#from Object_detection_webcam import arm_detect
 
 WIDTH = 640 * 2
 HEIGHT = 533.33 * 2
@@ -144,7 +144,7 @@ def chapter2():
         lmain.imgtk = imgtk
         lmain.configure(image=imgtk)
         lmain.after(10, show_frame)
-
+"""
     def btn_start(v_in):
         threadStart = threading.Thread(target=v_in.set_start_record())
         threadStart.start()
@@ -182,7 +182,7 @@ def chapter2():
                 fig.canvas.flush_events()
         # print the stat page
         v_in.print_amp_stat()
-    """
+
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
 
@@ -192,22 +192,22 @@ def chapter2():
     lower_frame = Frame(root, bd=10)
     lower_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.1, anchor="n")
 
-    start_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
+    start_button = Button(lower_frame, relief="flat", borderwidth=0)
     start_button.place(relx=0.05, rely=0, relheight=1)
 
     # pause_image = PhotoImage(file="./Source_Image/pause.png")
-    pause_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
+    pause_button = Button(lower_frame, relief="flat", borderwidth=0)
     pause_button.place(relx=0.1, rely=0, relheight=1)
 
-    resume_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
+    resume_button = Button(lower_frame, relief="flat", borderwidth=0)
     resume_button.place(relx=0.15, rely=0, relheight=1)
 
     # stop_image = PhotoImage(file="./Source_Image/stop.png")
-    stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (root.destroy(), chapter3()))
+    stop_button = Button(lower_frame, relief="flat", command=lambda: (root.destroy(), chapter3()))
     stop_button.place(relx=0.2, rely=0, relheight=1)
 
     # screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
-    screenshot_button = Button(lower_frame, image=screenshot_image, relief="flat")
+    screenshot_button = Button(lower_frame, relief="flat")
     screenshot_button.place(relx=0.9, rely=0, relheight=1)
 
     wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
@@ -219,8 +219,8 @@ def chapter2():
 # wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
 # wave_label.place(relx=0.5, rely=0.25)
 
-# show_wave(v_in)
-    show_frame()
+    show_wave(v_in)
+   # show_frame()
 
 
 def chapter3():
