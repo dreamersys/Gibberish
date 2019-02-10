@@ -29,36 +29,24 @@ def Start_Transcribing():
 def intro():
     def open_help():
         def show_help_buttons():
-            about_button.place(rely=0.1, relx=0.85, relwidth=0.1, relheight=0.05)
-            tutorial_button.place(rely=0.2, relx=0.85, relwidth=0.1, relheight=0.05)
-            analyze_button.place(rely=0.3, relx=0.85, relwidth=0.1, relheight=0.05)
-            history_button.place(rely=0.4, relx=0.85, relwidth=0.1, relheight=0.05)
-            settings_button.place(rely=0.5, relx=0.85, relwidth=0.1, relheight=0.05)
-            exit_button.place(rely=0.6, relx=0.85, relwidth=0.1, relheight=0.05)
+            about_button.place(rely=0.025, relx=0.875, relwidth=0.1, relheight=0.05)
+            history_button.place(rely=0.125, relx=0.875, relwidth=0.1, relheight=0.05)
+            exit_button.place(rely=0.225, relx=0.875, relwidth=0.1, relheight=0.05)
 
         def close_help():
             arrow_button.destroy()
             help_desk.destroy()
             about_button.place(relwidth=0, relheight=0)
-            tutorial_button.place(relwidth=0, relheight=0)
-            analyze_button.place(relwidth=0, relheight=0)
             history_button.place(relwidth=0, relheight=0)
-            settings_button.place(relwidth=0, relheight=0)
             exit_button.place(relwidth=0, relheight=0)
 
-        # arrow_image = PhotoImage(file="./Source_Image/arrow.png")
-        # arrow_image = arrow_image.zoom(15)
-        # arrow_image = arrow_image.subsample(30)
-        arrow_button = Button(root, image=help_image, relief=SUNKEN, command=close_help)
-        arrow_button.place(relx=0.77, rely=0.05, relheight=0.027)
+        arrow_button = Button(root, image=help_image, relief="flat", command=close_help)
+        arrow_button.place(relx=0.82, rely=0.05, relheight=0.027)
         help_desk = Label(root, bg="#E5E5E5")
-        help_desk.place(relx=0.8, relwidth=0.2, relheight=0.9)
-        about_button = Button(root, text="About")
-        tutorial_button = Button(root, text="Tutorial")
-        analyze_button = Button(root, text="Analyze")
-        history_button = Button(root, text="History")
-        settings_button = Button(root, text="Settings")
-        exit_button = Button(root, text="Exit")
+        help_desk.place(relx=0.85, relwidth=0.15, relheight=0.3)
+        about_button = Button(root, text="About", relief="flat", bg="#E5E5E5", font=("Source Serif Variable", 15, "bold"))
+        history_button = Button(root, text="History", relief="flat", bg="#E5E5E5", font=("Source Serif Variable", 15))
+        exit_button = Button(root, text="Exit", relief="flat", bg="#E5E5E5", font=("Source Serif Variable", 15))
         show_help_buttons()
 
     frame = Frame(root, bd=10)
@@ -71,18 +59,16 @@ def intro():
     help_image = PhotoImage(file="./Source_Image/3lines.png")
     help_image = help_image.zoom(15)
     help_image = help_image.subsample(30)
-    help_button = Button(root, image=help_image, relief=SUNKEN, command=open_help)
+    help_button = Button(root, image=help_image, relief="flat", command=open_help)
     help_button.place(relx=0.92, rely=0.05, relheight=0.027)
 
-    startButton = Button(lower_frame, text="Start", relief=SUNKEN, bg="#A2A2A2", command=lambda: (chapter2(),
+    startButton = Button(lower_frame, text="Start", relief="flat", command=lambda: (chapter2(),
                                                                                                   Start_Transcribing(),
                                                                                                   os.system(
-                                                                                                      "python voicedB_visual.py")
+                                                                                                      "python voicedB_visual.py\\")
                                                                                                   ),font=("Source Serif Variable", 20))
     startButton.place(relx=0.40, rely=0.4, relwidth=0.2, relheight=0.2)
 
-    caption = Label(lower_frame, text="A software that makes us better speakers", font=("Source Serif Variable", 20))
-    caption.place(rely=-0.05, relx=0.5, relwidth=0.8, relheight=0.15, anchor="n")
     version_label = Label(lower_frame, text="V1.0.0", font=("Source Serif Variable", 11))
     version_label.place(relx=0.05, rely=0.90)
     team_name_label = Label(lower_frame, text="A product of D_Major", font=("Source Serif Variable", 11))
@@ -123,26 +109,14 @@ def chapter2():
     lower_frame = Frame(root, bd=10)
     lower_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.1, anchor="n")
 
-    start_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
-    start_button.place(relx=0.05, rely=0, relheight=1)
 
-    # pause_image = PhotoImage(file="./Source_Image/pause.png")
-    pause_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
-    pause_button.place(relx=0.1, rely=0, relheight=1)
-
-    resume_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
-    resume_button.place(relx=0.15, rely=0, relheight=1)
-
-    # stop_image = PhotoImage(file="./Source_Image/stop.png")
     stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (root.destroy(), chapter3()))
-    stop_button.place(relx=0.2, rely=0, relheight=1)
-
-    # screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
+    stop_button.place(relx=0.1, rely=0, relheight=1)
     screenshot_button = Button(lower_frame, image=screenshot_image, relief="flat")
     screenshot_button.place(relx=0.9, rely=0, relheight=1)
 
-    wave_label = Label(lower_frame, text="Start recording. Please talk. Say \"Quit\" or \"Exit\" to stop", bg="#ffffff",font=("Source Serif Variable", 25))
-    wave_label.place(relx=0.3, rely=0.25)
+    wave_label = Label(lower_frame, text="Start recording. Please talk. Say \"Quit\" or \"Exit\" to stop",font=("Source Serif Variable", 25))
+    wave_label.place(relx=0.5, rely=0.5, anchor="center")
 
     show_frame()
 
@@ -272,7 +246,7 @@ def chapter3():
             self.controller = controller
             titleLabel = Label(self, text="Speech to Text", font=("Source Serif Variable", 25))
             titleLabel.place(relx=0.5, rely=0.3, anchor="n")
-            with open("./Text.txt", "r") as f:
+            with open("./Test.txt", "r") as f:
                 Label(self, text=f.read(), wraplength=500).place(relx=0.5, rely=0.4, anchor="n")
             repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable", 25))
             repeatedLabel.place(relx=0.45, rely=0.8, anchor="n")
