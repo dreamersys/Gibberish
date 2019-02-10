@@ -99,8 +99,7 @@ def intro():
                          font=("Source Serif Variable", 20))
     startButton.place(relx=0.40, rely=0.4, relwidth=0.2, relheight=0.2)
 
-    caption = Label(lower_frame, text="A software that makes us better speakers", font=("Source Serif Variable", 20))
-    caption.place(rely=-0.05, relx=0.5, relwidth=0.8, relheight=0.15, anchor="n")
+
     version_label = Label(lower_frame, text="V1.0.0", font=("Source Serif Variable", 11))
     version_label.place(relx=0.05, rely=0.90)
     team_name_label = Label(lower_frame, text="A product of D_Major", font=("Source Serif Variable", 11))
@@ -142,21 +141,9 @@ def chapter2():
     lower_frame = Frame(root, bd=10)
     lower_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.1, anchor="n")
 
-    start_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
-    start_button.place(relx=0.05, rely=0, relheight=1)
 
-    # pause_image = PhotoImage(file="./Source_Image/pause.png")
-    pause_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
-    pause_button.place(relx=0.1, rely=0, relheight=1)
-
-    resume_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
-    resume_button.place(relx=0.15, rely=0, relheight=1)
-
-    # stop_image = PhotoImage(file="./Source_Image/stop.png")
     stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (root.destroy(), chapter3()))
     stop_button.place(relx=0.2, rely=0, relheight=1)
-
-    # screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
     screenshot_button = Button(lower_frame, image=screenshot_image, relief="flat")
     screenshot_button.place(relx=0.9, rely=0, relheight=1)
 
@@ -267,10 +254,10 @@ def chapter3():
 
             Frame.__init__(self, parent)
             self.controller = controller
-            sentimentLabel = Label(self, text="Sentiment:", font=("Source Serif Variable", 25))
-            sentimentLabel.place(relx=0.5, rely=0.5, anchor="n")
-            with open("/Output Files/Attitude.txt", "r") as f:
-                Label(self, text=f.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.6, rely=0.5,
+            sentimentLabel = Label(self, text="Sentiment:", font=("Source Serif Variable", 25, "bold"))
+            sentimentLabel.place(relx=0.5, rely=0.2, anchor="n")
+            with open("./Output Files/Attitude.txt", "r") as f:
+                Label(self, text=f.read(), font=("Source Serif Variable", 20), wraplength=500).place(relx=0.5, rely=0.4,
                                                                                                      anchor="n")
             button_tab()
 
@@ -296,7 +283,7 @@ def chapter3():
             titleLabel = Label(self, text="Speech to Text", font=("Source Serif Variable", 25))
             titleLabel.place(relx=0.5, rely=0.3, anchor="n")
             with open("./Output Files/Test.txt", "r") as f:
-                Label(self, text=f.read(), wraplength=500).place(relx=0.5, rely=0.4, anchor="n")
+                Label(self, text=f.read(), wraplength=500, font=("Source Serif Variable", 15)).place(relx=0.5, rely=0.4, anchor="n")
             repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable", 25))
             repeatedLabel.place(relx=0.45, rely=0.8, anchor="n")
             with open("./Output Files/Repeated.txt", "r") as f:

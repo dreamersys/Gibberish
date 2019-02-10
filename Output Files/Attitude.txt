@@ -3,5 +3,5 @@
 3) If Score >= 0.1, it is positive attitude.
 
 
-Your score is: 0.0
-Overall, you expressed NEUTRAL attitude in speech.
+Your score is: -0.10000000149011612
+Overall, you expressed NEGATIVE attitude in speech.
