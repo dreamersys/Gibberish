@@ -1,10 +1,9 @@
 from tkinter import *
 from tkinter import font
 import cv2
-import time
 import PIL
 from PIL import Image, ImageTk
-from Object_detection_webcam import arm_detect
+#from Object_detection_webcam import arm_detect
 
 WIDTH = 640 * 2
 HEIGHT = 533.33 * 2
@@ -38,19 +37,29 @@ def intro():
             settings_button.place(relwidth=0, relheight=0)
             exit_button.place(relwidth=0, relheight=0)
 
+        def about_open():
+            about_open_frame.place(relwidth=1.55, relheight=1, anchor="n")
+            about_label=Label(about_open_frame, text="About:\n Made by D_Major\n Jerry Kuo, David Guo, Nathan Ng, Andy Wu\n Powered by: Google API, TencerFlow")
+            about_label.place(relx=0.7, rely=0.5)
+
+
+        def close_open():
+            about_open_frame.destroy()
+
         # arrow_image = PhotoImage(file="./Source_Image/arrow.png")
         # arrow_image = arrow_image.zoom(15)
         # arrow_image = arrow_image.subsample(30)
-        arrow_button = Button(root, image=help_image, relief=SUNKEN, command=close_help)
+        about_open_frame = Frame(root, bd=50, bg="#F1F1F1")
+        arrow_button = Button(root, image=help_image, relief="flat", command=lambda: (close_open(), close_help()))
         arrow_button.place(relx=0.77, rely=0.05, relheight=0.027)
         help_desk = Label(root, bg="#E5E5E5")
         help_desk.place(relx=0.8, relwidth=0.2, relheight=0.9)
-        about_button = Button(root, text="About")
-        tutorial_button = Button(root, text="Tutorial")
-        analyze_button = Button(root, text="Analyze")
-        history_button = Button(root, text="History")
-        settings_button = Button(root, text="Settings")
-        exit_button = Button(root, text="Exit")
+        about_button = Button(root, text="About", relief="flat", bg="#E5E5E5", font=("Merriweather",15), command=about_open())
+        tutorial_button = Button(root, text="Tutorial", relief="flat", font=("Merriweather",15), bg="#E5E5E5")
+        analyze_button = Button(root, text="Analyze", relief="flat", font=("Merriweather",15), bg="#E5E5E5")
+        history_button = Button(root, text="History", relief="flat", font=("Merriweather",15), bg="#E5E5E5")
+        settings_button = Button(root, text="Settings", relief="flat", font=("Merriweather",15), bg="#E5E5E5")
+        exit_button = Button(root, text="Exit", relief="flat", font=("Merriweather",15), bg="#E5E5E5")
         show_help_buttons()
 
     frame = Frame(root, bd=10)
@@ -63,10 +72,10 @@ def intro():
     help_image = PhotoImage(file="./Source_Image/3lines.png")
     help_image = help_image.zoom(15)
     help_image = help_image.subsample(30)
-    help_button = Button(root, image=help_image, relief=SUNKEN, command=open_help)
+    help_button = Button(root, image=help_image, relief="flat", command=open_help)
     help_button.place(relx=0.92, rely=0.05, relheight=0.027)
 
-    startButton = Button(lower_frame, text="Start", relief=SUNKEN, bg="#A2A2A2", command=lambda: (chapter2()),
+    startButton = Button(lower_frame, text="Start", relief="flat", bg="#F1F1F1", command=lambda: (chapter2()),
                          font=("Source Serif Variable", 20))
     startButton.place(relx=0.40, rely=0.4, relwidth=0.2, relheight=0.2)
 
@@ -264,7 +273,7 @@ def chapter3():
             repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable",25))
             repeatedLabel.place(relx=0.45, rely=0.8, anchor="n")
             with open("./Repeated.txt", "r") as f:
-                Label(self, text=f.read(), font=("Source Serif Variable",25),wraplength=500).place(relx=0.6, rely=0.8,anchor="n")
+                Label(self, text=f.read(), font=("Source Serif Variable",25),wraplength=500).place(relx=0.65, rely=0.8,anchor="n")
             button_tab()
 
     if __name__ == "__main__":

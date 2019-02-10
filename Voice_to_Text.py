@@ -1,9 +1,6 @@
 from __future__ import division
-
 import re
 import sys
-
-
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types

@@ -1,7 +1,7 @@
 # Import packages
 import os
 import numpy as np
-import tensorflow as tf
+#import tensorflow as tf
 import math
 import time
 from object_detection.utils import label_map_util
