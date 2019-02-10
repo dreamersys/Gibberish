@@ -99,16 +99,18 @@ def chapter2():
     d_speed = dict([(0, 0)])
     speed = 0
     def show_frame():
-        d_temp = {0: 0}
+        speed_temp = 0
         global prev_time, prev_avg_cood
         _, frame = video.read()
         height, width = frame.shape[:2]
         frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
         frame = cv2.flip(frame, 1)
         # print(prev_avg_cood)
-        img, prev_time, prev_avg_cood, d_temp = arm_detect(frame, prev_time, prev_avg_cood, speed)
+        img, prev_time, prev_avg_cood, speed_temp = arm_detect(frame, prev_time, prev_avg_cood, speed)
 
-        d_speed.update({d_temp.keys() : d_temp.values()})
+
+        d_speed.update({prev_time: speed_temp})
+
         # print(prev_avg_cood)
         cv2image = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
         img = PIL.Image.fromarray(cv2image)
