@@ -34,6 +34,7 @@ def analyze_overall_speech_sentiment(input_file_name):
     attitude_file.write("3) If Score >= 0.1, it is positive attitude.\n\n\n")
     attitude_file.write("Your score is: " + str(score_result) + "\n")
     attitude_file.write(sentiment)
+    return score_result
 
 
 def sample_analyze_sentiment(content):

@@ -42,62 +42,43 @@ def Start_Transcribing():
 def intro():
     def open_help():
         def show_help_buttons():
-            about_button.place(rely=0.1, relx=0.85, relwidth=0.1, relheight=0.05)
-            tutorial_button.place(rely=0.2, relx=0.85, relwidth=0.1, relheight=0.05)
-            history_button.place(rely=0.3, relx=0.85, relwidth=0.1, relheight=0.05)
-            settings_button.place(rely=0.4, relx=0.85, relwidth=0.1, relheight=0.05)
-            exit_button.place(rely=0.5, relx=0.85, relwidth=0.1, relheight=0.05)
+            about_button.place(rely=0.025, relx=0.865, relwidth=0.1, relheight=0.05)
+            history_button.place(rely=0.085, relx=0.865, relwidth=0.1, relheight=0.05)
+            exit_button.place(rely=0.145, relx=0.865, relwidth=0.1, relheight=0.05)
 
         def close_help():
             arrow_button.destroy()
             help_desk.destroy()
             about_button.place(relwidth=0, relheight=0)
-            tutorial_button.place(relwidth=0, relheight=0)
             history_button.place(relwidth=0, relheight=0)
-            settings_button.place(relwidth=0, relheight=0)
             exit_button.place(relwidth=0, relheight=0)
 
-        about_open_frame = Frame(root, bd=50, bg="#F1F1F1")
-
-        def about_open():
-            about_open_frame.place(relwidth=1.55, relheight=1, anchor="n")
-            about_label = Label(about_open_frame,
-                                text="About:\n Made by D_Major\n Jerry Kuo, David Guo, Nathan Ng, Andy Wu\n Powered by: Google API, TencerFlow",
-                                font=("Merriweather", 15))
-            about_label.place(relx=0.7, rely=0.5)
-
-        def about_close():
-            about_open_frame.destroy()
-
-        arrow_button = Button(root, image=help_image, relief="flat", command=lambda: (about_close(), close_help()))
-        arrow_button.place(relx=0.77, rely=0.05, relheight=0.027)
+        arrow_button = Button(root, image=help_image, relief=SUNKEN, command=close_help)
+        arrow_button.place(relx=0.80, rely=0.05, relheight=0.027)
         help_desk = Label(root, bg="#E5E5E5")
-        help_desk.place(relx=0.8, relwidth=0.2, relheight=0.9)
-        about_button = Button(root, text="About", relief="flat", bg="#E5E5E5", font=("Merriweather", 15),
-                              command=about_open())
-        tutorial_button = Button(root, text="Tutorial", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
-        history_button = Button(root, text="History", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
-        settings_button = Button(root, text="Settings", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
-        exit_button = Button(root, text="Exit", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
+        help_desk.place(relx=0.83, relwidth=0.2, relheight=0.25)
+        about_button = Button(root, text="About")
+        history_button = Button(root, text="History")
+        exit_button = Button(root, text="Exit")
+        show_help_buttons()
 
     frame = Frame(root, bd=10)
     frame.place(relx=0.5, rely=0.1, relwidth=0.75, relheight=0.65, anchor="n")
     lower_frame = Frame(root, bd=5)
     lower_frame.place(relx=0.5, rely=0.5, relwidth=1, relheight=0.5, anchor="n")
 
-    logo_label = Label(frame, image=logo_image)
+
+    logo_label = Label(frame, image=logo_image, relief="flat")
     logo_label.place(relwidth=1, relheight=1)
     help_image = PhotoImage(file="./Source_Image/3lines.png")
     help_image = help_image.zoom(15)
     help_image = help_image.subsample(30)
-    help_button = Button(root, image=help_image, relief=SUNKEN, command=open_help)
+    help_button = Button(root, image=help_image, relief="flat", command=open_help)
     help_button.place(relx=0.92, rely=0.05, relheight=0.027)
 
-    startButton = Button(lower_frame, text="Start", relief=SUNKEN, bg="#A2A2A2", command=lambda: (chapter2(),
-                                                                                                  Start_Transcribing(),
-                                                                                                  ),
-                         font=("Source Serif Variable", 20))
-    startButton.place(relx=0.40, rely=0.4, relwidth=0.2, relheight=0.2)
+
+    startButton = Button(lower_frame, text="Start", relief="flat", font=("Source Serif Variable", 20), command=lambda: (chapter2(),Start_Transcribing()))
+    startButton.place(relx=0.40, rely=0.35, relwidth=0.2, relheight=0.2)
 
     version_label = Label(lower_frame, text="V1.0.0", font=("Source Serif Variable", 11))
     version_label.place(relx=0.05, rely=0.90)
@@ -107,18 +88,14 @@ def intro():
 
 stop_image = PhotoImage(file="./Source_Image/stop.png")
 
-# # Output repeted Word to
-# Voice_to_Text.count_repeated_words("Output Files/Test.txt", "Output Files/Repeated.txt")
-# NLP.analyze_overall_speech_sentiment("Output Files/Test.txt")
+# Output repeted Word to
+repeated_words = Voice_to_Text.count_repeated_words("Output Files/Test.txt", "Output Files/Repeated.txt")
+sentiment_score = NLP.analyze_overall_speech_sentiment("Output Files/Test.txt")
 
 
 def chapter2():
     d_speed = dict([(0, 0)])
     speed = 0
-
-    # Output repeted Word to
-    Voice_to_Text.count_repeated_words("Output Files/Test.txt", "Output Files/Repeated.txt")
-    NLP.analyze_overall_speech_sentiment("Output Files/Test.txt")
 
     def show_frame():
         speed_temp = 0
@@ -220,6 +197,9 @@ def chapter3():
             canvas = Canvas(self, height=400 * 2, width=640 * 2)
             canvas.pack()
             self.controller = controller
+            # sentiment_score ######################################
+            # repeated_words ######################################
+            
             label = Label(self, text="78", font=("Source Serif Variable", 150), fg="#FF0000")
             label.place(relx=0.5, rely=0.4, anchor="n")
             button_tab()

@@ -111,7 +111,7 @@ class voice_input():
         ax.set_ylim(-150, 150)
         ax.set_xlim(0, self.CHUNK)
 
-        for i in range(1, 250):
+        for i in range(1, 150):
             if not self.IsPause:
                 # start the timer
                 t_elap = time.clock()
@@ -125,6 +125,23 @@ class voice_input():
                 # print(v_in.Amplot)
                 # update the graph instantly and refresh
                 line.set_ydata(data_int)
+
+                dB_max1 = maxminline.Line2D([0, self.CHUNK], [100, 100])
+                dB_max2 = maxminline.Line2D([0, self.CHUNK], [-100, -100])
+                dB_min1 = maxminline.Line2D([0, self.CHUNK], [10, 10])
+                dB_min2 = maxminline.Line2D([0, self.CHUNK], [-10, -10])
+
+                dB_max1.set_color("#ffc0c0")
+                dB_max2.set_color("#ffc0c0")
+                dB_min1.set_color("#c0f1ff")
+                dB_min2.set_color("#c0f1ff")
+
+                plt.legend([dB_max1, dB_min1], ["Max dB", "Min dB"], loc='lower right')
+
+                ax.add_line(dB_max1)
+                ax.add_line(dB_max2)
+                ax.add_line(dB_min1)
+                ax.add_line(dB_min2)
                 fig.canvas.draw()
                 fig.show()
                 fig.canvas.flush_events()
@@ -135,7 +152,7 @@ class voice_input():
         for value in self.Amplot.values():
             if (value > 100 or value < 10):
                 self.loud_score += 1
-        output_file = open("Loudness.txt", "w")
+        output_file = open("./Output Files/Loudness.txt", "w")
         output_file.write(str(100-self.loud_score/30))
 
 vi = voice_input()

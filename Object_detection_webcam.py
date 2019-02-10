@@ -1,7 +1,7 @@
 # Import packages
 import os
 import numpy as np
-#import tensorflow as tf
+import tensorflow as tf
 import math
 import time
 from object_detection.utils import label_map_util
@@ -53,7 +53,6 @@ def arm_detect(frame, prev_time, prev_avg_cood, speed):
         delta = math.sqrt(
           (current_avg_cood[0] - prev_avg_cood[0]) ** 2 + (current_avg_cood[1] - prev_avg_cood[1]) ** 2) * 2.54 / 96
         speed = delta / (time.clock() - prev_time)
-        #print(speed)
     else:
         current_avg_cood = prev_avg_cood
 

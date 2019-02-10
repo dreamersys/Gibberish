@@ -3,4 +3,5 @@
 3) If Score >= 0.1, it is positive attitude.
 
 
-
+Your score is: 0.4000000059604645
+Overall, you expressed POSITIVE attitude in speech
