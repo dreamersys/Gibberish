@@ -144,7 +144,7 @@ def chapter2():
         key_time = key
         tot_value += value
     score = tot_value/key_time
-    file = open("./Output Files/speed.txt")
+    file = open("./speed.txt")
     file.write(str(score))
 
 
