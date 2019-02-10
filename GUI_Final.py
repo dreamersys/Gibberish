@@ -91,8 +91,6 @@ def intro():
 
     startButton = Button(lower_frame, text="Start", relief=SUNKEN, bg="#A2A2A2", command=lambda: (chapter2(),
                                                                                                   Start_Transcribing(),
-                                                                                                  os.system(
-                                                                                                      "python voicedB_visual.py")
                                                                                                   ),font=("Source Serif Variable", 20))
     startButton.place(relx=0.40, rely=0.4, relwidth=0.2, relheight=0.2)
 
@@ -109,8 +107,8 @@ stop_image = PhotoImage(file="./Source_Image/stop.png")
 screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
 
 # Output repeted Word to
-Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
-NLP.analyze_overall_speech_sentiment("Test.txt")
+Voice_to_Text.count_repeated_words("./Output Files/Test.txt", "./Output Files/Repeated.txt")
+NLP.analyze_overall_speech_sentiment("./Output Files/Test.txt")
 
 
 
@@ -289,11 +287,11 @@ def chapter3():
             self.controller = controller
             titleLabel = Label(self, text="Speech to Text", font=("Source Serif Variable", 25))
             titleLabel.place(relx=0.5, rely=0.3, anchor="n")
-            with open("/Output Files/Text.txt", "r") as f:
+            with open("./Output Files/Test.txt", "r") as f:
                 Label(self, text=f.read(), wraplength=500).place(relx=0.5, rely=0.4, anchor="n")
             repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable", 25))
             repeatedLabel.place(relx=0.45, rely=0.8, anchor="n")
-            with open("/Output Files/Repeated.txt", "r") as f:
+            with open("./Output Files/Repeated.txt", "r") as f:
                 Label(self, text=f.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.6, rely=0.8,
                                                                                                      anchor="n")
             button_tab()

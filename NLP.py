@@ -4,7 +4,7 @@ import six
 
 
 def analyze_overall_speech_sentiment(input_file_name):
-    attitude_file = open("Attitude.txt", "w")
+    attitude_file = open("Output Files/Attitude.txt", "w")
     score_total = 0
     num_sentiments = 0
 
