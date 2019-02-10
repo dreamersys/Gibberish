@@ -6,6 +6,7 @@ import Voice_to_Text
 import threading
 import PIL
 from PIL import Image, ImageTk
+from Object_detection_webcam import arm_detect
 
 WIDTH = 640 * 2
 HEIGHT = 533.33 * 2
@@ -106,15 +107,14 @@ Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
 
 
 def chapter2():
-    """"
     def show_frame():
         global prev_time, prev_avg_cood
         _, frame = video.read()
         height, width = frame.shape[:2]
         frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
-        frame = cv2.flip(frame, 1)
+        img = cv2.flip(frame, 1)
         # print(prev_avg_cood)
-        img, prev_time, prev_avg_cood = arm_detect(frame, prev_time, prev_avg_cood)
+        # img, prev_time, prev_avg_cood = arm_detect(img, prev_time, prev_avg_cood)
         # print(prev_avg_cood)
         cv2image = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
         img = PIL.Image.fromarray(cv2image)
@@ -122,7 +122,7 @@ def chapter2():
         lmain.imgtk = imgtk
         lmain.configure(image=imgtk)
         lmain.after(10, show_frame)
-    """
+
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
 
@@ -150,10 +150,10 @@ def chapter2():
     screenshot_button = Button(lower_frame, image=screenshot_image, relief="flat")
     screenshot_button.place(relx=0.9, rely=0, relheight=1)
 
-    wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
-    wave_label.place(relx=0.5, rely=0.25)
+    wave_label = Label(lower_frame, text="Start recording. Please talk. Say \"Quit\" or \"Exit\" to stop", bg="#ffffff",font=("Source Serif Variable", 25))
+    wave_label.place(relx=0.4, rely=0.25)
 
-    # show_frame()
+    show_frame()
 
 
 def chapter3():
