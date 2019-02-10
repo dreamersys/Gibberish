@@ -1,5 +1,0 @@
-*.xml
-*.iml
-.idea/
-*object_detection/
-*.pyc

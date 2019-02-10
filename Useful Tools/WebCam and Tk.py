@@ -7,7 +7,7 @@ from tkinter import *
 width, height = 800, 600
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+cap.set(cv2.CAP_PROP_cFRAME_HEIGHT, height)
 
 root = Tk()
 root.bind('<Escape>', lambda e: root.quit())
