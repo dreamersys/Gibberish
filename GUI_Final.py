@@ -18,18 +18,6 @@ prev_time = 0
 prev_avg_cood = [0, 0]
 video = cv2.VideoCapture(0)
 
-v_in = voice.voice_input()
-
-stream = v_in.capture_voice()
-v_in.IsRecording = True
-fig, ax = plt.subplots()
-x = np.arange(0, 2 * v_in.CHUNK, 2)
-line, = ax.plot(x, np.random.rand(v_in.CHUNK))
-
-# set x/y axis limit
-ax.set_ylim(-150, 150)
-ax.set_xlim(0, v_in.CHUNK)
-
 root = Tk()
 root.title("Gibberish")
 canvas = Canvas(root, height=HEIGHT, width=WIDTH)
@@ -145,43 +133,6 @@ def chapter2():
         lmain.configure(image=imgtk)
         lmain.after(10, show_frame)
 """
-    def btn_start(v_in):
-        threadStart = threading.Thread(target=v_in.set_start_record())
-        threadStart.start()
-
-    def btn_pause(v_in):
-        threadPause = threading.Thread(target=v_in.set_pause)
-        threadPause.start()
-
-    def btn_resume(v_in):
-        threadresume = threading.Thread(target=v_in.set_resume)
-        threadresume.start()
-
-    def btn_stop(v_in):
-        threadstop = threading.Thread(target=v_in.set_IsRecording)
-        threadstop.start()
-
-    def show_wave(v_in):
-        while v_in.IsRecording:
-            if not v_in.IsPause:
-                # start the timer
-                t_elap = time.clock()
-                t_elap -= v_in.t_pause
-                # read a chunk of sample and unpack itto array
-                data = stream.read(v_in.CHUNK, exception_on_overflow=False)
-                data_int = np.array(struct.unpack(str(2 * v_in.CHUNK) + 'B', data), dtype='b')[::2]
-
-                # store the instantaneous time & loudness into dictionary
-                v_in.Amplot.update({t_elap: data_int[0]})
-                # print(v_in.Amplot)
-
-                # update the graph instantly and refresh
-                line.set_ydata(data_int)
-                fig.canvas.draw()
-                fig.show()
-                fig.canvas.flush_events()
-        # print the stat page
-
 
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
@@ -203,7 +154,7 @@ def chapter2():
     resume_button.place(relx=0.15, rely=0, relheight=1)
 
     # stop_image = PhotoImage(file="./Source_Image/stop.png")
-    stop_button = Button(lower_frame, command=lambda: (v_in.print_amp_stat(), v_in.get_loudness_score(), root.destroy(), chapter3()))
+    stop_button = Button(lower_frame, command=lambda: (voice.print_amp_stat(), root.destroy(), chapter3()))
     stop_button.place(relx=0.2, rely=0, relheight=1)
 
     # screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
@@ -218,8 +169,6 @@ def chapter2():
 
 # wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
 # wave_label.place(relx=0.5, rely=0.25)
-
-    show_wave(v_in)
    # show_frame()
 
 
