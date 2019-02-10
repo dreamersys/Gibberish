@@ -42,8 +42,8 @@ wave_label.place(relx=0.5, rely=0.25)
 
 def show_frame():
     _, frame = video.read()
-    height, width = image.shape[:2]
-    frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+    height, width = frame.shape[:2]
+    frame = cv2.resize(frame, (0, 0), fx=WIDTH/width, fy=HEIGHT/height)
     cv2image = cv2.cvtColor(arm_detect(frame), cv2.COLOR_BGR2RGBA)
     img = PIL.Image.fromarray(cv2image)
     imgtk = ImageTk.PhotoImage(image=img)
