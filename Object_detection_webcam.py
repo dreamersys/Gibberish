@@ -1,7 +1,7 @@
 # Import packages
 import os
 import numpy as np
-import tensorflow as tf
+#import tensorflow as tf
 import math
 import time
 from object_detection.utils import label_map_util
@@ -10,7 +10,7 @@ from object_detection.utils import visualization_utils as vis_util
 MODEL_NAME = 'inference_graph/saved_model_0207/'
 CWD_PATH = os.getcwd()
 PATH_TO_CKPT = os.path.join(CWD_PATH, MODEL_NAME, 'frozen_inference_graph.pb')
-PATH_TO_LABELS = os.path.join(CWD_PATH, 'labelmap.pbtxt')
+PATH_TO_LABELS = os.path.join(CWD_PATH, 'Output Files/labelmap.pbtxt')
 
 NUM_CLASSES = 1
 label_map = label_map_util.load_labelmap(PATH_TO_LABELS)

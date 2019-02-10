@@ -57,20 +57,38 @@ def intro():
             about_button.place(rely=0.025, relx=0.875, relwidth=0.1, relheight=0.05)
             history_button.place(rely=0.125, relx=0.875, relwidth=0.1, relheight=0.05)
             exit_button.place(rely=0.225, relx=0.875, relwidth=0.1, relheight=0.05)
+
+
+
         def close_help():
             arrow_button.destroy()
             help_desk.destroy()
             about_button.place(relwidth=0, relheight=0)
 
 
-        arrow_button = Button(root, image=help_image, relief="flat", command=close_help)
-        arrow_button.place(relx=0.82, rely=0.05, relheight=0.027)
+
+        about_open_frame = Frame(root, bd=50, bg="#F1F1F1")
+
+        def about_open():
+            about_open_frame.place(relwidth=1.55, relheight=1, anchor="n")
+            about_label = Label(about_open_frame,
+                                text="About:\n Made by D_Major\n Jerry Kuo, David Guo, Nathan Ng, Andy Wu\n Powered by: Google API, TencerFlow",
+                                font=("Merriweather", 15))
+            about_label.place(relx=0.7, rely=0.5)
+
+        def about_close():
+            about_open_frame.destroy()
+
+        arrow_button = Button(root, image=help_image, relief="flat", command=lambda: (about_close(), close_help()))
+        arrow_button.place(relx=0.77, rely=0.05, relheight=0.027)
         help_desk = Label(root, bg="#E5E5E5")
-        help_desk.place(relx=0.85, relwidth=0.15, relheight=0.3)
-        about_button = Button(root, text="About", relief="flat", bg="#E5E5E5", font=("Source Serif Variable", 15))
-        history_button = Button(root, text="History", relief="flat", bg="#E5E5E5", font=("Source Serif Variable", 15))
-        exit_button = Button(root, text="Exit", relief="flat", bg="#E5E5E5", font=("Source Serif Variable", 15))
-        show_help_buttons()
+        help_desk.place(relx=0.8, relwidth=0.2, relheight=0.9)
+        about_button = Button(root, text="About", relief="flat", bg="#E5E5E5", font=("Merriweather", 15),
+                              command=about_open())
+        tutorial_button = Button(root, text="Tutorial", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
+        history_button = Button(root, text="History", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
+        settings_button = Button(root, text="Settings", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
+        exit_button = Button(root, text="Exit", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
 
         about_open_frame = Frame(root, bd=50, bg="#F1F1F1")
 
@@ -97,6 +115,7 @@ def intro():
     help_image = help_image.subsample(30)
     help_button = Button(root, image=help_image, relief="flat", command=open_help)
     help_button.place(relx=0.92, rely=0.05, relheight=0.027)
+
 
     startButton = Button(lower_frame, text="Start", relief="flat", font=("Source Serif Variable", 20), command=lambda: (chapter2(),Start_Transcribing()))
     startButton.place(relx=0.40, rely=0.35, relwidth=0.2, relheight=0.2)
@@ -292,6 +311,7 @@ def chapter3():
             self.controller = controller
             titleLabel = Label(self, text="Speech to Text", font=("Source Serif Variable", 25))
             titleLabel.place(relx=0.5, rely=0.3, anchor="n")
+
             with open("./Output Files/Test.txt", "r") as f:
                 Label(self, text=f.read(), wraplength=500, font=("Source Serif Variable", 15)).place(relx=0.5, rely=0.4, anchor="n")
             repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable", 25))
