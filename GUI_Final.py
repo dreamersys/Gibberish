@@ -2,9 +2,12 @@ from tkinter import *
 from tkinter import font
 import cv2
 import time
+import Voice_to_Text
+import threading
 import PIL
 from PIL import Image, ImageTk
-from Object_detection_webcam import arm_detect
+
+# from Object_detection_webcam import arm_detect
 
 WIDTH = 640 * 2
 HEIGHT = 533.33 * 2
@@ -16,6 +19,15 @@ root.title("Gibberish")
 canvas = Canvas(root, height=HEIGHT, width=WIDTH)
 canvas.pack()
 logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
+
+
+def Start_Transcribing():
+    thread_transcribe_sp = threading.Thread(target=Voice_to_Text.transcribe_speech)
+    thread_transcribe_sp.start()
+    print("Start recording")
+
+
+
 
 
 def intro():
@@ -66,7 +78,8 @@ def intro():
     help_button = Button(root, image=help_image, relief=SUNKEN, command=open_help)
     help_button.place(relx=0.92, rely=0.05, relheight=0.027)
 
-    startButton = Button(lower_frame, text="Start", relief=SUNKEN, bg="#A2A2A2", command=lambda: (chapter2()),
+    startButton = Button(lower_frame, text="Start", relief=SUNKEN, bg="#A2A2A2", command=lambda: (chapter2(),
+                                                                                                  Start_Transcribing()),
                          font=("Source Serif Variable", 20))
     startButton.place(relx=0.40, rely=0.4, relwidth=0.2, relheight=0.2)
 
@@ -82,8 +95,13 @@ pause_image = PhotoImage(file="./Source_Image/pause.png")
 stop_image = PhotoImage(file="./Source_Image/stop.png")
 screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
 
+#Output repeted Word to
+Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
+
+
 
 def chapter2():
+    """"
     def show_frame():
         global prev_time, prev_avg_cood
         _, frame = video.read()
@@ -99,7 +117,7 @@ def chapter2():
         lmain.imgtk = imgtk
         lmain.configure(image=imgtk)
         lmain.after(10, show_frame)
-
+    """
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
 
@@ -120,8 +138,7 @@ def chapter2():
     resume_button.place(relx=0.15, rely=0, relheight=1)
 
     # stop_image = PhotoImage(file="./Source_Image/stop.png")
-    stop_button = Button(lower_frame, image=stop_image, relief="flat",
-                         command=lambda: (root.destroy(),chapter3()))
+    stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (root.destroy(),chapter3()))
     stop_button.place(relx=0.2, rely=0, relheight=1)
 
     # screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
@@ -131,11 +148,16 @@ def chapter2():
     wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
     wave_label.place(relx=0.5, rely=0.25)
 
-    show_frame()
+    # show_frame()
+
 
 
 def chapter3():
+
+
+
     class StatFrame(Tk):
+
 
         def __init__(self, *args, **kwargs):
             Tk.__init__(self, *args, **kwargs)
