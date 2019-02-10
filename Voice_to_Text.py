@@ -3,6 +3,7 @@ from __future__ import division
 import re
 import sys
 
+
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
@@ -14,6 +15,7 @@ RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
 
+# MicrophoneStream Class transcribes audio file (i.e. microphone stream) to text
 class MicrophoneStream(object):
     """Opens a recording stream as a generator yielding the audio chunks."""
     def __init__(self, rate, chunk):
@@ -79,7 +81,7 @@ class MicrophoneStream(object):
             yield b''.join(data)
 
 
-def listen_print_loop(responses):
+def listen_print_loop(responses, file):
     """Iterates through server responses and prints them.
 
     The responses passed is a generator that will block until a response
@@ -124,6 +126,7 @@ def listen_print_loop(responses):
 
         else:
             print(transcript + overwrite_chars)
+            file.write(transcript + overwrite_chars)
 
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
@@ -133,17 +136,27 @@ def listen_print_loop(responses):
 
             num_chars_printed = 0
 
+    return file
 
-def main():
+
+# Transcribe microphone stream to text
+def transcribe_speech():
     # See http://g.co/cloud/speech/docs/languages
     # for a list of supported languages.
     language_code = 'en-US'  # a BCP-47 language tag
+
+    file = open("Test.txt", "w")
+
+    print("Start recording. Please talk. Say \"Quit\" or \"Exit\" to stop")
 
     client = speech.SpeechClient()
     config = types.RecognitionConfig(
         encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=RATE,
-        language_code=language_code)
+        language_code=language_code,
+        # Enable automatic punctuation
+        enable_automatic_punctuation = True)
+
     streaming_config = types.StreamingRecognitionConfig(
         config=config,
         interim_results=True)
@@ -156,13 +169,14 @@ def main():
         responses = client.streaming_recognize(streaming_config, requests)
 
         # Now, put the transcription responses to use.
-        listen_print_loop(responses)
+        listen_print_loop(responses, file)
 
 
+
+"""
 if __name__ == '__main__':
     main()
+"""
 
 
 
-def main():
-    MicrophoneStream(,RATE, CHUNK)
