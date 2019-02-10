@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('TkAgg')
 from tkinter import *
 from tkinter import font
 import cv2
@@ -6,6 +8,7 @@ import Voice_to_Text
 import threading
 import PIL
 from PIL import Image, ImageTk
+
 import matplotlib.pyplot as plt
 from collections import OrderedDict
 from Object_detection_webcam import arm_detect
@@ -101,6 +104,7 @@ Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
 def chapter2():
     d_speed = dict([(0, 0)])
     speed = 0
+
     def show_frame():
         speed_temp = 0
         global prev_time, prev_avg_cood
@@ -109,7 +113,7 @@ def chapter2():
         frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
         frame = cv2.flip(frame, 1)
         # print(prev_avg_cood)
-        img, prev_time, prev_avg_cood, d_temp = arm_detect(frame, prev_time, prev_avg_cood, speed)
+        img, prev_time, prev_avg_cood, speed_temp = arm_detect(frame, prev_time, prev_avg_cood, speed)
         d_speed.update({prev_time: speed_temp})
 
         # print(prev_avg_cood)
@@ -119,10 +123,6 @@ def chapter2():
         lmain.imgtk = imgtk
         lmain.configure(image=imgtk)
         lmain.after(10, show_frame)
-
-    for key, value in d_speed.items():
-        plt.plot(key, value)
-        plt.show()
 
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
@@ -144,8 +144,13 @@ def chapter2():
 
     show_frame()
 
+    def show_plot():
+        for key, value in d_speed.items():
+            plt.plot(key, value)
+            plt.show()
 
 def chapter3():
+    chapter2().showplot()
     class StatFrame(Tk):
         def __init__(self, *args, **kwargs):
             Tk.__init__(self, *args, **kwargs)
