@@ -140,4 +140,3 @@ class voice_input():
 
 vi = voice_input()
 vi.capture_voice()
-
