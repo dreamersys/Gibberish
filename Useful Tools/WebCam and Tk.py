@@ -2,7 +2,7 @@ import PIL
 from PIL import Image, ImageTk
 # import pytesseract
 import cv2
-from Tkinter import *
+from tkinter import *
 
 width, height = 800, 600
 cap = cv2.VideoCapture(0)
