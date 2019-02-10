@@ -65,7 +65,7 @@ class voice_input():
         amp_stat_image_path = os.path.join(os.getcwd(), 'Source_Image/')
         fig.savefig(amp_stat_image_path + 'Gibberish_stats' + '.png')
         plt.close()
-        self.get_loudness_score()
+        #self.get_loudness_score()
         return 0
 
     def capture_voice(self):

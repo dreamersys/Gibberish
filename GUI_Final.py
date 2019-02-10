@@ -34,7 +34,7 @@ root = Tk()
 root.title("Gibberish")
 canvas = Canvas(root, height=HEIGHT, width=WIDTH)
 canvas.pack()
-logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
+# logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
 
 
 def Start_Transcribing():
@@ -83,13 +83,13 @@ def intro():
     lower_frame = Frame(root, bd=5)
     lower_frame.place(relx=0.5, rely=0.5, relwidth=1, relheight=0.5, anchor="n")
 
-    logo_label = Label(frame, image=logo_image)
-    logo_label.place(relwidth=1, relheight=1)
-    help_image = PhotoImage(file="./Source_Image/3lines.png")
-    help_image = help_image.zoom(15)
-    help_image = help_image.subsample(30)
-    help_button = Button(root, image=help_image, relief=SUNKEN, command=open_help)
-    help_button.place(relx=0.92, rely=0.05, relheight=0.027)
+    # logo_label = Label(frame, image=logo_image)
+    # logo_label.place(relwidth=1, relheight=1)
+    # help_image = PhotoImage(file="./Source_Image/3lines.png")
+    # help_image = help_image.zoom(15)
+    # help_image = help_image.subsample(30)
+    # help_button = Button(root, image=help_image, relief=SUNKEN, command=open_help)
+    # help_button.place(relx=0.92, rely=0.05, relheight=0.027)
 
     startButton = Button(lower_frame, text="Start", relief=SUNKEN, bg="#A2A2A2", command=lambda: (chapter2(),
                                                                                                   Start_Transcribing()),
@@ -181,7 +181,7 @@ def chapter2():
                 fig.show()
                 fig.canvas.flush_events()
         # print the stat page
-        v_in.print_amp_stat()
+
 
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
@@ -203,7 +203,7 @@ def chapter2():
     resume_button.place(relx=0.15, rely=0, relheight=1)
 
     # stop_image = PhotoImage(file="./Source_Image/stop.png")
-    stop_button = Button(lower_frame, relief="flat", command=lambda: (root.destroy(), chapter3()))
+    stop_button = Button(lower_frame, command=lambda: (v_in.print_amp_stat(), v_in.get_loudness_score(), root.destroy(), chapter3()))
     stop_button.place(relx=0.2, rely=0, relheight=1)
 
     # screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
