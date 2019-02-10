@@ -3,9 +3,9 @@ from tkinter import font
 import cv2
 import time
 import struct
-#import Voice_to_Text
 import threading
 import numpy as np
+#import Voice_to_Text
 import voicedB_visual as voice
 import matplotlib.pyplot as plt
 import PIL
@@ -41,10 +41,6 @@ def Start_Transcribing():
     thread_transcribe_sp = threading.Thread(target=Voice_to_Text.transcribe_speech)
     thread_transcribe_sp.start()
     print("Start recording")
-
-
-
-
 
 def intro():
     def open_help():
@@ -162,7 +158,7 @@ def chapter2():
 
                 # store the instantaneous time & loudness into dictionary
                 v_in.Amplot.update({t_elap: data_int[0]})
-                print(v_in.Amplot)
+                # print(v_in.Amplot)
 
                 # update the graph instantly and refresh
                 line.set_ydata(data_int)
@@ -205,15 +201,8 @@ def chapter2():
     show_wave(v_in)
     # show_frame()
 
-
-
 def chapter3():
-
-
-
     class StatFrame(Tk):
-
-
         def __init__(self, *args, **kwargs):
             Tk.__init__(self, *args, **kwargs)
 
@@ -246,7 +235,6 @@ def chapter3():
             frame.tkraise()
 
     class PageOne(Frame):
-
         def __init__(self, parent, controller):
             def button_tab():
                 button1 = Button(self, text="Overall", font=("Source Serif Variable",20),
@@ -271,7 +259,6 @@ def chapter3():
             button_tab()
 
     class PageTwo(Frame):
-
         def __init__(self, parent, controller):
             def button_tab():
                 button1 = Button(self, text="Overall",font=("Source Serif Variable",11),
@@ -294,7 +281,6 @@ def chapter3():
             button_tab()
 
     class PageThree(Frame):
-
         def __init__(self, parent, controller):
             def button_tab():
                 button1 = Button(self, text="Overall",font=("Source Serif Variable",11),
@@ -317,7 +303,6 @@ def chapter3():
             button_tab()
 
     class PageFour(Frame):
-
         def __init__(self, parent, controller):
             def button_tab():
                 button1 = Button(self, text="Overall",font=("Source Serif Variable",11),
@@ -348,7 +333,5 @@ def chapter3():
         app = StatFrame()
         app.mainloop()
 
-
 intro()
-
 root.mainloop()
