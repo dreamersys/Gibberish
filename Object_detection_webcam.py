@@ -4,7 +4,6 @@ import numpy as np
 import tensorflow as tf
 import math
 import time
-import matplotlib.pyplot as plt
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 
@@ -54,8 +53,6 @@ def arm_detect(frame, prev_time, prev_avg_cood):
         delta = math.sqrt(
           (current_avg_cood[0] - prev_avg_cood[0]) ** 2 + (current_avg_cood[1] - prev_avg_cood[1]) ** 2) * 2.54 / 96
         speed = delta / (time.clock() - prev_time)
-        plt.plot(time.clock(), speed)
-        plt.show()
         #print(speed)
     else:
         current_avg_cood = prev_avg_cood
@@ -72,4 +69,4 @@ def arm_detect(frame, prev_time, prev_avg_cood):
         line_thickness=8,
         min_score_thresh=0.60)
 
-    return frame, time.clock(), current_avg_cood
+    return frame, time.clock(), current_avg_cood, dict([(time.clock(), speed)])
