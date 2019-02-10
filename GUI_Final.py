@@ -1,12 +1,13 @@
 from tkinter import *
 from tkinter import font
 import cv2
-import time
+import os
 import Voice_to_Text
 import threading
 import NLP
 import PIL
 from PIL import Image, ImageTk
+from Object_detection_webcam import arm_detect
 
 WIDTH = 640 * 2
 HEIGHT = 533.33 * 2
@@ -54,7 +55,6 @@ def intro():
             settings_button.place(relwidth=0, relheight=0)
             exit_button.place(relwidth=0, relheight=0)
 
-
         about_open_frame = Frame(root, bd=50, bg="#F1F1F1")
         def about_open():
             about_open_frame.place(relwidth=1.55, relheight=1, anchor="n")
@@ -75,7 +75,6 @@ def intro():
         history_button = Button(root, text="History", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
         settings_button = Button(root, text="Settings", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
         exit_button = Button(root, text="Exit", relief="flat", font=("Merriweather", 15), bg="#E5E5E5")
-        show_help_buttons()
 
     frame = Frame(root, bd=10)
     frame.place(relx=0.5, rely=0.1, relwidth=0.75, relheight=0.65, anchor="n")
@@ -87,12 +86,14 @@ def intro():
     help_image = PhotoImage(file="./Source_Image/3lines.png")
     help_image = help_image.zoom(15)
     help_image = help_image.subsample(30)
-    help_button = Button(root, image=help_image, relief="flat", command=open_help)
+    help_button = Button(root, image=help_image, relief=SUNKEN, command=open_help)
     help_button.place(relx=0.92, rely=0.05, relheight=0.027)
 
     startButton = Button(lower_frame, text="Start", relief=SUNKEN, bg="#A2A2A2", command=lambda: (chapter2(),
-                                                                                                  Start_Transcribing()),
-                         font=("Source Serif Variable", 20))
+                                                                                                  Start_Transcribing(),
+                                                                                                  os.system(
+                                                                                                      "python voicedB_visual.py")
+                                                                                                  ),font=("Source Serif Variable", 20))
     startButton.place(relx=0.40, rely=0.4, relwidth=0.2, relheight=0.2)
 
     caption = Label(lower_frame, text="A software that makes us better speakers", font=("Source Serif Variable", 20))
@@ -114,7 +115,6 @@ NLP.analyze_overall_speech_sentiment("Test.txt")
 
 
 def chapter2():
-    """"
     def show_frame():
         global prev_time, prev_avg_cood
         _, frame = video.read()
@@ -130,7 +130,7 @@ def chapter2():
         lmain.imgtk = imgtk
         lmain.configure(image=imgtk)
         lmain.after(10, show_frame)
-    """
+
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
 
@@ -158,15 +158,14 @@ def chapter2():
     screenshot_button = Button(lower_frame, image=screenshot_image, relief="flat")
     screenshot_button.place(relx=0.9, rely=0, relheight=1)
 
-    wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
-    wave_label.place(relx=0.5, rely=0.25)
+    wave_label = Label(lower_frame, text="Start recording. Please talk. Say \"Quit\" or \"Exit\" to stop", bg="#ffffff",font=("Source Serif Variable", 25))
+    wave_label.place(relx=0.3, rely=0.25)
 
-    # show_frame()
+    show_frame()
 
 
 def chapter3():
     class StatFrame(Tk):
-
         def __init__(self, *args, **kwargs):
             Tk.__init__(self, *args, **kwargs)
 
@@ -290,13 +289,12 @@ def chapter3():
             self.controller = controller
             titleLabel = Label(self, text="Speech to Text", font=("Source Serif Variable", 25))
             titleLabel.place(relx=0.5, rely=0.3, anchor="n")
-            with open("./Text.txt", "r") as f:
+            with open("/Output Files/Text.txt", "r") as f:
                 Label(self, text=f.read(), wraplength=500).place(relx=0.5, rely=0.4, anchor="n")
             repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable", 25))
             repeatedLabel.place(relx=0.45, rely=0.8, anchor="n")
-            with open("./Repeated.txt", "r") as f:
-                Label(self, text=f.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.65,
-                                                                                                     rely=0.8,
+            with open("/Output Files/Repeated.txt", "r") as f:
+                Label(self, text=f.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.6, rely=0.8,
                                                                                                      anchor="n")
             button_tab()
 
