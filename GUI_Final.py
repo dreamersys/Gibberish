@@ -4,6 +4,7 @@ import cv2
 import time
 import Voice_to_Text
 import threading
+import NLP
 import PIL
 from PIL import Image, ImageTk
 
@@ -108,6 +109,8 @@ screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
 
 # Output repeted Word to
 Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
+NLP.analyze_overall_speech_sentiment("Test.txt")
+
 
 
 def chapter2():
