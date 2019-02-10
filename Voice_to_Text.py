@@ -12,6 +12,25 @@ RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
 
+# @file_name: file name passed in for reading as string
+def count_repeated_words(input_file_name, output_file_name):
+    output_file = open(output_file_name, "w")
+    count = 0
+    with open(input_file_name) as f:
+        while True:
+            cur_line = f.readline()
+            string_list = cur_line.split()
+            for i in range(0, len(string_list)-1):
+                if string_list[i].lower() == string_list[i+1].lower(): # case insensitive
+                    count += 1
+            if not cur_line:
+                break
+
+    output_file.write(str(count))
+    f.close()
+    return count
+
+
 # MicrophoneStream Class transcribes audio file (i.e. microphone stream) to text
 class MicrophoneStream(object):
     """Opens a recording stream as a generator yielding the audio chunks."""
@@ -94,7 +113,9 @@ def listen_print_loop(responses, file):
     final one, print a newline to preserve the finalized transcription.
     """
     num_chars_printed = 0
+
     for response in responses:
+
         if not response.results:
             continue
 
@@ -130,7 +151,6 @@ def listen_print_loop(responses, file):
             if re.search(r'\b(exit|quit)\b', transcript, re.I):
                 print('Exiting..')
                 break
-
             num_chars_printed = 0
 
     return file
@@ -138,6 +158,7 @@ def listen_print_loop(responses, file):
 
 # Transcribe microphone stream to text
 def transcribe_speech():
+
     # See http://g.co/cloud/speech/docs/languages
     # for a list of supported languages.
     language_code = 'en-US'  # a BCP-47 language tag
@@ -167,6 +188,7 @@ def transcribe_speech():
 
         # Now, put the transcription responses to use.
         listen_print_loop(responses, file)
+
 
 
 
