@@ -2,22 +2,26 @@ from tkinter import *
 from tkinter import font
 import cv2
 import time
-import Voice_to_Text
+import struct
 import threading
+import numpy as np
+import Voice_to_Text
+import voicedB_visual as voice
+import matplotlib.pyplot as plt
 import PIL
 from PIL import Image, ImageTk
-# from Object_detection_webcam import arm_detect
 
 WIDTH = 640 * 2
 HEIGHT = 533.33 * 2
 prev_time = 0
 prev_avg_cood = [0, 0]
 video = cv2.VideoCapture(0)
+
 root = Tk()
 root.title("Gibberish")
 canvas = Canvas(root, height=HEIGHT, width=WIDTH)
 canvas.pack()
-logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
+# logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
 
 
 def Start_Transcribing():
@@ -77,6 +81,7 @@ def intro():
     lower_frame = Frame(root, bd=5)
     lower_frame.place(relx=0.5, rely=0.5, relwidth=1, relheight=0.5, anchor="n")
 
+
     logo_label = Label(frame, image=logo_image)
     logo_label.place(relwidth=1, relheight=1)
     help_image = PhotoImage(file="./Source_Image/3lines.png")
@@ -102,9 +107,8 @@ pause_image = PhotoImage(file="./Source_Image/pause.png")
 stop_image = PhotoImage(file="./Source_Image/stop.png")
 screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
 
-# Output repeted Word to
-# Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
 
+Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
 
 def chapter2():
     def show_frame():
@@ -122,6 +126,7 @@ def chapter2():
         lmain.imgtk = imgtk
         lmain.configure(image=imgtk)
         lmain.after(10, show_frame)
+  
 
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
@@ -132,22 +137,23 @@ def chapter2():
     lower_frame = Frame(root, bd=10)
     lower_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.1, anchor="n")
 
-    start_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
+    start_button = Button(lower_frame, relief="flat", borderwidth=0)
     start_button.place(relx=0.05, rely=0, relheight=1)
 
     # pause_image = PhotoImage(file="./Source_Image/pause.png")
-    pause_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
+    pause_button = Button(lower_frame, relief="flat", borderwidth=0)
     pause_button.place(relx=0.1, rely=0, relheight=1)
 
-    resume_button = Button(lower_frame, image=pause_image, relief="flat", borderwidth=0)
+    resume_button = Button(lower_frame, relief="flat", borderwidth=0)
     resume_button.place(relx=0.15, rely=0, relheight=1)
 
     # stop_image = PhotoImage(file="./Source_Image/stop.png")
+
     stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (Voice_to_Text.check_forceQuit(), root.destroy(), chapter3()))
     stop_button.place(relx=0.2, rely=0, relheight=1)
 
     # screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
-    screenshot_button = Button(lower_frame, image=screenshot_image, relief="flat")
+    screenshot_button = Button(lower_frame, relief="flat")
     screenshot_button.place(relx=0.9, rely=0, relheight=1)
 
     wave_label = Label(lower_frame, text="Start recording. Please talk. Say \"Quit\" or \"Exit\" to stop", bg="#ffffff",font=("Source Serif Variable", 25))
@@ -155,10 +161,11 @@ def chapter2():
 
     show_frame()
 
+# show_frame()
+
 
 def chapter3():
     class StatFrame(Tk):
-
         def __init__(self, *args, **kwargs):
             Tk.__init__(self, *args, **kwargs)
 
@@ -191,7 +198,6 @@ def chapter3():
             frame.tkraise()
 
     class PageOne(Frame):
-
         def __init__(self, parent, controller):
             def button_tab():
                 button1 = Button(self, text="Overall", font=("Source Serif Variable", 20),
@@ -216,7 +222,6 @@ def chapter3():
             button_tab()
 
     class PageTwo(Frame):
-
         def __init__(self, parent, controller):
             def button_tab():
                 button1 = Button(self, text="Overall", font=("Source Serif Variable", 11),
@@ -239,7 +244,6 @@ def chapter3():
             button_tab()
 
     class PageThree(Frame):
-
         def __init__(self, parent, controller):
             def button_tab():
                 button1 = Button(self, text="Overall", font=("Source Serif Variable", 11),
@@ -262,7 +266,6 @@ def chapter3():
             button_tab()
 
     class PageFour(Frame):
-
         def __init__(self, parent, controller):
             def button_tab():
                 button1 = Button(self, text="Overall", font=("Source Serif Variable", 11),
@@ -281,14 +284,13 @@ def chapter3():
             Frame.__init__(self, parent)
             self.controller = controller
             titleLabel = Label(self, text="Speech to Text", font=("Source Serif Variable", 25))
-            titleLabel.place(relx=0.5, rely=0.3, anchor="n")
+            titleLabel.place(relx=0.5, rely=0.1, anchor="n")
             with open("./Text.txt", "r") as f:
-                Label(self, text=f.read(), wraplength=500).place(relx=0.5, rely=0.4, anchor="n")
+                Label(self, text=f.read(), wraplength=500, font= ("Source Serif Variable", 15)).place(relx=0.5, rely=0.2, anchor="n")
             repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable", 25))
-            repeatedLabel.place(relx=0.45, rely=0.8, anchor="n")
+            repeatedLabel.place(relx=0.5, rely=0.8, anchor="n")
             with open("./Repeated.txt", "r") as f:
-                Label(self, text=f.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.65,
-                                                                                                     rely=0.8,
+                Label(self, text=f.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.65, rely=0.8,
                                                                                                      anchor="n")
             button_tab()
 
@@ -298,5 +300,4 @@ def chapter3():
 
 
 intro()
-
 root.mainloop()

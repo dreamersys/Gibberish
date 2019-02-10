@@ -1,11 +1,33 @@
 import os
 import time
-import pyaudio
 import struct
+import pyaudio
+import threading
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.lines as maxminline
 from collections import OrderedDict
+
+
+def btn_start(v_in):
+    threadStart = threading.Thread(target=v_in.set_start_record())
+    threadStart.start()
+
+
+def btn_pause(v_in):
+    threadPause = threading.Thread(target=v_in.set_pause)
+    threadPause.start()
+
+
+def btn_resume(v_in):
+    threadresume = threading.Thread(target=v_in.set_resume)
+    threadresume.start()
+
+
+def btn_stop(v_in):
+    threadstop = threading.Thread(target=v_in.set_IsRecording)
+    threadstop.start()
+
 
 class voice_input():
 
@@ -19,6 +41,7 @@ class voice_input():
         self.IsRecording = False
         self.IsPause = False
         self.t_pause = 0
+        self.loud_score = 0
 
     def set_pause(self):
         self.t_pause = time.clock()
@@ -33,7 +56,7 @@ class voice_input():
 
     def print_amp_stat(self):
         last_key = self.Amplot.popitem()[0]
-        #print(last_key)
+        # print(last_key)
         fig, ax = plt.subplots()
 
         ax.set_ylim(-150, 150)
@@ -59,11 +82,12 @@ class voice_input():
         plt.plot(*zip(*sorted(self.Amplot.items())))
 
         plt.show()
-        filename = input("Please enter the file name.")
+        # filename = input("Please enter the file name.")
 
         amp_stat_image_path = os.path.join(os.getcwd(), 'Source_Image/')
-        fig.savefig(amp_stat_image_path + filename + '.png')
+        fig.savefig(amp_stat_image_path + 'Gibberish_stats' + '.png')
         plt.close()
+        self.get_loudness_score()
         return 0
 
     def capture_voice(self):
@@ -87,31 +111,33 @@ class voice_input():
         ax.set_ylim(-150, 150)
         ax.set_xlim(0, self.CHUNK)
 
-        # start recording until the user hit stop button
-        # for i in range(1, 50):
-        while self.IsRecording:
+        for i in range(1, 250):
             if not self.IsPause:
                 # start the timer
                 t_elap = time.clock()
-                print(t_elap, "--------")
                 t_elap -= self.t_pause
-                print(t_elap, "----------------------------")
                 # read a chunk of sample and unpack itto array
                 data = stream.read(self.CHUNK, exception_on_overflow=False)
                 data_int = np.array(struct.unpack(str(2 * self.CHUNK) + 'B', data), dtype='b')[::2]
 
                 # store the instantaneous time & loudness into dictionary
-                self.Amplot.update({t_elap : data_int[0]})
-                #print(self.Amplot)
-
+                self.Amplot.update({t_elap: data_int[0]})
+                # print(v_in.Amplot)
                 # update the graph instantly and refresh
                 line.set_ydata(data_int)
                 fig.canvas.draw()
                 fig.show()
                 fig.canvas.flush_events()
-        # clear figure and close plot when finish recording
-        fig.clf()
-        plt.close()
         # print the stat page
         self.print_amp_stat()
+
+    def get_loudness_score(self):
+        for value in self.Amplot.values():
+            if (value > 100 or value < 10):
+                self.loud_score += 1
+        output_file = open("Loudness.txt", "w")
+        output_file.write(str(100-self.loud_score/30))
+
+vi = voice_input()
+vi.capture_voice()
 
