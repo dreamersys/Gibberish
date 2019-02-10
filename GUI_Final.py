@@ -17,6 +17,16 @@ prev_avg_cood = [0, 0]
 video = cv2.VideoCapture(0)
 root = Tk()
 root.title("Gibberish")
+ws = root.winfo_screenwidth()  # width of the screen
+hs = root.winfo_screenheight() # height of the screen
+
+# calculate x and y coordinates for the Tk root window
+x = (ws/2) - (WIDTH/2)
+y = (hs/2) - (HEIGHT/2)
+
+# set the dimensions of the screen
+# and where it is placed
+root.geometry('%dx%d+%d+%d' % (WIDTH, HEIGHT, x, y))
 canvas = Canvas(root, height=HEIGHT, width=WIDTH)
 canvas.pack()
 logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
@@ -105,7 +115,7 @@ def chapter2():
         lmain.configure(image=imgtk)
         lmain.after(10, show_frame)
 
-    for key, value in d_speed:
+    for key, value in d_speed.items():
         plt.plot(key, value)
 
     frame = Frame(root, bg="#80c1ff", bd=5)
