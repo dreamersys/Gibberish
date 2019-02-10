@@ -2,21 +2,26 @@ import threading
 from voicedB_visual import *
 from tkinter import *
 
+
 def btn_start(v_in):
     threadStart = threading.Thread(target=v_in.capture_voice)
     threadStart.start()
+
 
 def btn_pause(v_in):
     threadPause = threading.Thread(target=v_in.set_pause)
     threadPause.start()
 
+
 def btn_resume(v_in):
-    threadresume = threading.Thread(target=v_in.set_pause)
+    threadresume = threading.Thread(target=v_in.set_resume)
     threadresume.start()
+
 
 def btn_stop(v_in):
     threadstop = threading.Thread(target=v_in.set_IsRecording)
     threadstop.start()
+
 
 root = Tk()
 root.title("Image Loader")
@@ -36,7 +41,7 @@ root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
 v_in = voice_input()
 
-btn = Button(root, text="Start", command= lambda: btn_start(v_in))
+btn = Button(root, text="Start", command=lambda: btn_start(v_in))
 btn.pack(side="bottom", fill="both", expand="no", padx="10", pady="10")
 
 btn2 = Button(root, text="Pause", command=lambda: btn_pause(v_in))
