@@ -1,12 +1,11 @@
-######## Webcam Object Detection Using Tensorflow-trained Classifier #########
+######## Image Object Detection Using Tensorflow-trained Classifier #########
 #
 # Author: Evan Juras
-# Date: 1/20/18
-# Description: 
+# Date: 1/15/18
+# Description:
 # This program uses a TensorFlow-trained classifier to perform object detection.
-# It loads the classifier uses it to perform object detection on a webcam feed.
-# It draws boxes and scores around the objects of interest in each frame from
-# the webcam.
+# It loads the classifier uses it to perform object detection on an image.
+# It draws boxes and scores around the objects of interest in the image.
 
 ## Some of the code is copied from Google's example at
 ## https://github.com/tensorflow/models/blob/master/research/object_detection/object_detection_tutorial.ipynb
@@ -16,51 +15,47 @@
 
 ## but I changed it to make it more understandable to me.
 
-
 # Import packages
-import time
 import os
 import cv2
 import numpy as np
 import tensorflow as tf
 import sys
-import math
 
 # This is needed since the notebook is stored in the object_detection folder.
 sys.path.append("..")
 
 # Import utilites
-from object_detection.utils import label_map_util
-from object_detection.utils import visualization_utils as vis_util
+from utils import label_map_util
+from utils import visualization_utils as vis_util
 
-# Implement timer for calculating the speed of the arms traveling.
-timer = time.clock()
-prev_avg_cood = None
-prev_time = None
 # Name of the directory containing the object detection module we're using
 MODEL_NAME = 'inference_graph/saved_model_0207/'
+IMAGE_NAME = 'test3.jpg'
 
 # Grab path to current working directory
 CWD_PATH = os.getcwd()
 
 # Path to frozen detection graph .pb file, which contains the model that is used
 # for object detection.
-PATH_TO_CKPT = os.path.join(CWD_PATH, MODEL_NAME, 'frozen_inference_graph.pb')
+PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,'frozen_inference_graph.pb')
 
 # Path to label map file
-PATH_TO_LABELS = os.path.join(CWD_PATH, 'labelmap.pbtxt')
+PATH_TO_LABELS = os.path.join(CWD_PATH,'labelmap.pbtxt')
+
+# Path to image
+PATH_TO_IMAGE = os.path.join(CWD_PATH,IMAGE_NAME)
 
 # Number of classes the object detector can identify
 NUM_CLASSES = 1
 
-## Load the label map.
+# Load the label map.
 # Label maps map indices to category names, so that when our convolution
 # network predicts `5`, we know that this corresponds to `king`.
 # Here we use internal utility functions, but anything that returns a
 # dictionary mapping integers to appropriate string labels would be fine
 label_map = label_map_util.load_labelmap(PATH_TO_LABELS)
-categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=NUM_CLASSES,
-                                                            use_display_name=True)
+categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=NUM_CLASSES, use_display_name=True)
 category_index = label_map_util.create_category_index(categories)
 
 # Load the Tensorflow model into memory.
@@ -91,55 +86,46 @@ detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
 # Number of objects detected
 num_detections = detection_graph.get_tensor_by_name('num_detections:0')
 
-# Initialize webcam feed
-video = cv2.VideoCapture(0)
-# ret = video.set(3,1280)
-# ret = video.set(4,720)
+# Load image using OpenCV and
+# expand image dimensions to have shape: [1, None, None, 3]
+# i.e. a single-column array, where each item in the column has the pixel RGB value
+image = cv2.imread(PATH_TO_IMAGE)
+# image = cv2.resize(image, (0, 0), fx=0.2, fy=0.2)
+height, width = image.shape[:2]
+# print(height, width)
+image_expanded = np.expand_dims(image, axis=0)
 
-while True:
-    ret, frame = video.read()
-    frame_expanded = np.expand_dims(frame, axis=0)
+# Perform the actual detection by running the model with the image as input
+(boxes, scores, classes, num) = sess.run(
+    [detection_boxes, detection_scores, detection_classes, num_detections],
+    feed_dict={image_tensor: image_expanded})
 
-    # Perform the actual detection by running the model with the image as input
-    (boxes, scores, classes, num) = sess.run(
-        [detection_boxes, detection_scores, detection_classes, num_detections],
-        feed_dict={image_tensor: frame_expanded})
 
-    if scores[0][0] > 0.7:
-        height, width = frame.shape[:2]
-        current_time = timer
-        ymin = int(boxes[0][0][0] * height)
-        xmin = int(boxes[0][0][1] * width)
-        ymax = int(boxes[0][0][2] * height)
-        xmax = int(boxes[0][0][3] * width)
-        current_avg_cood = [(xmin + xmax) / 2, (ymin + ymax) / 2]
-        if prev_time is not None and prev_avg_cood is not None:
-            delta = math.sqrt(
-                (current_avg_cood[0] - prev_avg_cood[0]) ** 2 + (current_avg_cood[1] - prev_avg_cood[1]) ** 2)*2.54/96
-            speed = delta / (time.clock() - prev_time)
-            print(speed)
 
-        prev_time = time.clock()
-        prev_avg_cood = current_avg_cood
+# Draw the results of the detection (aka 'visulaize the results')
 
-    # Draw the results of the detection (aka 'visulaize the results')
-    vis_util.visualize_boxes_and_labels_on_image_array(
-        frame,
-        np.squeeze(boxes),
-        np.squeeze(classes).astype(np.int32),
-        np.squeeze(scores),
-        category_index,
-        use_normalized_coordinates=True,
-        line_thickness=8,
-        min_score_thresh=0.60)
+vis_util.visualize_boxes_and_labels_on_image_array(
+    image,
+    np.squeeze(boxes),
+    np.squeeze(classes).astype(np.int32),
+    np.squeeze(scores),
+    category_index,
+    use_normalized_coordinates=True,
+    line_thickness=8,
+    min_score_thresh=0.80)
+ymin = int(boxes[0][0][0]*height)
+xmin = int(boxes[0][0][1]*width)
+ymax = int(boxes[0][0][2]*height)
+xmax = int(boxes[0][0][3]*width)
+print('x1:{} x2:{} y1:{} y2:{}'.format(xmin, xmax, ymin, ymax))
+print(scores[0][0])
+cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (255, 0, 0), 2)
 
-    # All the results have been drawn on the frame, so it's time to display it.
-    cv2.imshow('Gebbrish', frame)
+# All the results have been drawn on image. Now display the image.
+cv2.imshow('Object detector', image)
 
-    # Press 'q' to quit
-    if cv2.waitKey(1) == ord('q'):
-        break
+# Press any key to close the image
+cv2.waitKey(0)
 
 # Clean up
-video.release()
 cv2.destroyAllWindows()
