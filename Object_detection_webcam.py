@@ -35,7 +35,7 @@ detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
 num_detections = detection_graph.get_tensor_by_name('num_detections:0')
 
 
-def arm_detect(frame, prev_time, prev_avg_cood):
+def arm_detect(frame, prev_time, prev_avg_cood, speed):
     current_avg_cood = None
     frame_expanded = np.expand_dims(frame, axis=0)
     # Perform the actual detection by running the model with the image as input

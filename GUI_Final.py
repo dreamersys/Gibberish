@@ -101,6 +101,7 @@ Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
 
 def chapter2():
     d_speed = dict([(0, 0)])
+    speed = 0
     def show_frame():
         d_temp = dict([(0, 0)])
         global prev_time, prev_avg_cood
@@ -109,7 +110,7 @@ def chapter2():
         frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
         frame = cv2.flip(frame, 1)
         # print(prev_avg_cood)
-        img, prev_time, prev_avg_cood, d_temp = arm_detect(frame, prev_time, prev_avg_cood)
+        img, prev_time, prev_avg_cood, d_temp = arm_detect(frame, prev_time, prev_avg_cood, speed)
         d_speed.update({d_temp.keys() : d_temp.values()})
         # print(prev_avg_cood)
         cv2image = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
@@ -119,7 +120,7 @@ def chapter2():
         lmain.configure(image=imgtk)
         lmain.after(10, show_frame)
 
-    for key, value in d_speed:
+    for key, value in d_speed.items():
         plt.plot(key, value)
 
     frame = Frame(root, bg="#80c1ff", bd=5)
