@@ -198,10 +198,3 @@ def transcribe_speech():
 
 
 
-"""
-if __name__ == '__main__':
-    main()
-"""
-
-
-

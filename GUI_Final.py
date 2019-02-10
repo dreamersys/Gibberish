@@ -144,10 +144,15 @@ def chapter2():
 
     show_frame()
 
-    def show_plot():
-        for key, value in d_speed.items():
-            plt.plot(key, value)
-            plt.show()
+    tot_value = 0
+    key_time = 0
+    for key, value in d_speed.items():
+        key_time = key
+        tot_value += value
+    score = tot_value/key_time
+    file = open("./Output Files/speed.txt")
+    file.write(str(score))
+
 
 def chapter3():
     chapter2().showplot()
