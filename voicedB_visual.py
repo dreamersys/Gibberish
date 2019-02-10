@@ -19,6 +19,7 @@ class voice_input():
         self.IsRecording = False
         self.IsPause = False
         self.t_pause = 0
+        self.loud_score = 0
 
     def set_pause(self):
         self.t_pause = time.clock()
@@ -79,3 +80,9 @@ class voice_input():
             frames_per_buffer=self.CHUNK
         )
         return stream
+
+    def get_loudness_score(self):
+        for value in self.Amplot.items():
+            if (value > 100 or value < 10):
+                self.loud_score+=1
+        print(self.loud_score)
