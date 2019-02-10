@@ -1,14 +1,18 @@
 from tkinter import *
 import cv2
+import time
 import PIL
 from PIL import Image, ImageTk
 from Object_detection_webcam import arm_detect
 
 root = Tk()
 root.title("Gibberish")
+timer = time.clock()
 video = cv2.VideoCapture(0)
+WIDTH = 1280
+HEIGHT = 720
 
-canvas = Canvas(root, height=720, width=1280)
+canvas = Canvas(root, height=HEIGHT, width=WIDTH)
 canvas.pack()
 
 
@@ -38,6 +42,8 @@ wave_label.place(relx=0.5, rely=0.25)
 
 def show_frame():
     _, frame = video.read()
+    height, width = image.shape[:2]
+    frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
     cv2image = cv2.cvtColor(arm_detect(frame), cv2.COLOR_BGR2RGBA)
     img = PIL.Image.fromarray(cv2image)
     imgtk = ImageTk.PhotoImage(image=img)

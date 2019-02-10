@@ -1,53 +1,16 @@
-######## Webcam Object Detection Using Tensorflow-trained Classifier #########
-#
-# Author: Evan Juras
-# Date: 1/20/18
-# Description: 
-# This program uses a TensorFlow-trained classifier to perform object detection.
-# It loads the classifier uses it to perform object detection on a webcam feed.
-# It draws boxes and scores around the objects of interest in each frame from
-# the webcam.
-
-## Some of the code is copied from Google's example at
-## https://github.com/tensorflow/models/blob/master/research/object_detection/object_detection_tutorial.ipynb
-
-## and some is copied from Dat Tran's example at
-## https://github.com/datitran/object_detector_app/blob/master/object_detection_app.py
-
-## but I changed it to make it more understandable to me.
-
-
 # Import packages
-import time
 import os
-import cv2
 import numpy as np
 import tensorflow as tf
-import sys
 import math
-
-# This is needed since the notebook is stored in the object_detection folder.
-sys.path.append("..")
-
-# Import utilites
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 
-# Implement timer for calculating the speed of the arms traveling.
-timer = time.clock()
 prev_avg_cood = None
 prev_time = None
-# Name of the directory containing the object detection module we're using
 MODEL_NAME = 'inference_graph/saved_model_0207/'
-
-# Grab path to current working directory
 CWD_PATH = os.getcwd()
-
-# Path to frozen detection graph .pb file, which contains the model that is used
-# for object detection.
 PATH_TO_CKPT = os.path.join(CWD_PATH, MODEL_NAME, 'frozen_inference_graph.pb')
-
-# Path to label map file
 PATH_TO_LABELS = os.path.join(CWD_PATH, 'labelmap.pbtxt')
 
 NUM_CLASSES = 1
@@ -55,7 +18,6 @@ label_map = label_map_util.load_labelmap(PATH_TO_LABELS)
 categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=NUM_CLASSES,
                                                             use_display_name=True)
 category_index = label_map_util.create_category_index(categories)
-
 
 detection_graph = tf.Graph()
 with detection_graph.as_default():
@@ -71,16 +33,7 @@ image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
 detection_boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
 detection_scores = detection_graph.get_tensor_by_name('detection_scores:0')
 detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
-
-# Number of objects detected
 num_detections = detection_graph.get_tensor_by_name('num_detections:0')
-
-# Initialize webcam feed
-# video = cv2.VideoCapture(0)
-
-
-# ret = video.set(3,1280)
-# ret = video.set(4,720)
 
 
 def arm_detect(frame):
@@ -121,5 +74,3 @@ def arm_detect(frame):
         min_score_thresh=0.60)
 
     return frame
-    # All the results have been drawn on the frame, so it's time to display it.
-    # cv2.imshow('Gebbrish', frame)
