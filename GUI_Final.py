@@ -6,7 +6,7 @@ import Voice_to_Text
 import threading
 import PIL
 from PIL import Image, ImageTk
-from Object_detection_webcam import arm_detect
+# from Object_detection_webcam import arm_detect
 
 WIDTH = 640 * 2
 HEIGHT = 533.33 * 2
@@ -103,7 +103,7 @@ stop_image = PhotoImage(file="./Source_Image/stop.png")
 screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
 
 # Output repeted Word to
-Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
+# Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
 
 
 def chapter2():
@@ -143,7 +143,7 @@ def chapter2():
     resume_button.place(relx=0.15, rely=0, relheight=1)
 
     # stop_image = PhotoImage(file="./Source_Image/stop.png")
-    stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (root.destroy(), chapter3()))
+    stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (Voice_to_Text.check_forceQuit(), root.destroy(), chapter3()))
     stop_button.place(relx=0.2, rely=0, relheight=1)
 
     # screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
@@ -151,7 +151,7 @@ def chapter2():
     screenshot_button.place(relx=0.9, rely=0, relheight=1)
 
     wave_label = Label(lower_frame, text="Start recording. Please talk. Say \"Quit\" or \"Exit\" to stop", bg="#ffffff",font=("Source Serif Variable", 25))
-    wave_label.place(relx=0.4, rely=0.25)
+    wave_label.place(relx=0.3, rely=0.25)
 
     show_frame()
 
