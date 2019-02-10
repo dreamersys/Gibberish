@@ -4,9 +4,9 @@ from tkinter import *
 from tkinter import font
 import cv2
 import os
-import Voice_to_Text
+# import Voice_to_Text
 import threading
-import NLP
+# import NLP
 import PIL
 from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
@@ -88,7 +88,7 @@ def intro():
 
 stop_image = PhotoImage(file="./Source_Image/stop.png")
 
-# Output repeted Word to
+# Output repeated Word to
 Voice_to_Text.count_repeated_words("Output Files/Test.txt", "Output Files/Repeated.txt")
 NLP.analyze_overall_speech_sentiment("Output Files/Test.txt")
 
@@ -144,6 +144,11 @@ def chapter2():
 
 
 def chapter3():
+    updatetext = 0
+
+    def checkforupdate():
+        updatetext = 1
+
     class StatFrame(Tk):
         def __init__(self, *args, **kwargs):
             Tk.__init__(self, *args, **kwargs)
@@ -179,6 +184,7 @@ def chapter3():
     class PageOne(Frame):
 
         def __init__(self, parent, controller):
+            checkforupdate()
             def button_tab():
                 button1 = Button(self, text="Overall", font=("Source Serif Variable", 20),
                                  command=lambda: controller.show_frame("PageOne"))
@@ -197,14 +203,14 @@ def chapter3():
             canvas = Canvas(self, height=400 * 2, width=640 * 2)
             canvas.pack()
             self.controller = controller
-            # FinalScore = 70
-            # FinalScore -= (sentiment_score*10)
-            # FinalScore -= repeated_words
-            # loudness_file =open("Output Files/Loudness.txt", "r")
-            # Loudness = loudness_file.read()
-            #
-            # FinalScore = (FinalScore/2) + (Loudness/2)
-            overallLabel = Label(self, text="Loudness:", font=("Source Serif Variable", 25, "bold"))
+            FinalScore = 78
+            FinalScore -= (sentiment_score*10)
+            FinalScore -= repeated_words
+            loudness_file =open("Output Files/Loudness.txt", "r")
+            Loudness = loudness_file.readline()
+
+            FinalScore = (FinalScore/2) + (Loudness/2)
+            overallLabel = Label(self, text="Overall:"+FinalScore, font=("Source Serif Variable", 25, "bold"))
             overallLabel.place(relx=0.5, rely=0.2, anchor="n")
             label = Label(self, text="78", font=("Source Serif Variable", 150), fg="#FF0000")
             label.place(relx=0.5, rely=0.4, anchor="n")
@@ -234,8 +240,9 @@ def chapter3():
             # stats_label.place(relx=0.5, rely=0.5, relwidth=0.5, relheight=0.5, anchor="n")
             loudnessLabel = Label(self, text="Loudness:", font=("Source Serif Variable", 25, "bold"))
             loudnessLabel.place(relx=0.5, rely=0.2, anchor="n")
-            with open("Output Files/Loudness.txt", "r") as k:
-                Label(self, text=k.read(), font=("Source Serif Variable", 20), wraplength=500).place(relx=0.5, rely=0.4,
+            if updatetext == 1:
+                with open("Output Files/Loudness.txt", "r") as k:
+                    Label(self, text=k.readline(), font=("Source Serif Variable", 20), wraplength=500).place(relx=0.5, rely=0.4,
                                                                                                      anchor="n")
             button_tab()
 
@@ -260,8 +267,9 @@ def chapter3():
             self.controller = controller
             sentimentLabel = Label(self, text="Sentiment:", font=("Source Serif Variable", 25, "bold"))
             sentimentLabel.place(relx=0.5, rely=0.2, anchor="n")
-            with open("./Output Files/Attitude.txt", "r") as f:
-                Label(self, text=f.read(), font=("Source Serif Variable", 20), wraplength=500).place(relx=0.5, rely=0.4,
+            if updatetext == 1:
+                with open("./Output Files/Attitude.txt", "r") as f:
+                    Label(self, text=f.readline(), font=("Source Serif Variable", 20), wraplength=500).place(relx=0.5, rely=0.4,
                                                                                                      anchor="n")
             button_tab()
 
@@ -287,12 +295,13 @@ def chapter3():
             titleLabel = Label(self, text="Speech to Text", font=("Source Serif Variable", 25))
             titleLabel.place(relx=0.5, rely=0.3, anchor="n")
 
-            with open("Output Files/Test.txt", "r") as f:
-                Label(self, text=f.read(), wraplength=500, font=("Source Serif Variable", 15)).place(relx=0.5, rely=0.4, anchor="n")
-            repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable", 25))
-            repeatedLabel.place(relx=0.4, rely=0.8, anchor="n")
-            with open("Output Files/Repeated.txt", "r") as g:
-                Label(self, text=g.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.6, rely=0.8,
+            if updatetext == 1:
+                with open("Output Files/Test.txt", "r") as f:
+                    Label(self, text=f.read(), wraplength=500, font=("Source Serif Variable", 15)).place(relx=0.5, rely=0.4, anchor="n")
+                repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable", 25))
+                repeatedLabel.place(relx=0.4, rely=0.8, anchor="n")
+                with open("Output Files/Repeated.txt", "r") as g:
+                    Label(self, text=g.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.6, rely=0.8,
                                                                                                      anchor="n")
 
             button_tab()
