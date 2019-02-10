@@ -18,20 +18,25 @@
 
 
 # Import packages
+import time
 import os
 import cv2
 import numpy as np
 import tensorflow as tf
 import sys
+import math
 
 # This is needed since the notebook is stored in the object_detection folder.
 sys.path.append("..")
-
 
 # Import utilites
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 
+# Implement timer for calculating the speed of the arms traveling.
+timer = time.clock()
+prev_avg_cood = None
+prev_time = None
 # Name of the directory containing the object detection module we're using
 MODEL_NAME = 'inference_graph/saved_model_0207/'
 
@@ -40,13 +45,13 @@ CWD_PATH = os.getcwd()
 
 # Path to frozen detection graph .pb file, which contains the model that is used
 # for object detection.
-PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,'frozen_inference_graph.pb')
+PATH_TO_CKPT = os.path.join(CWD_PATH, MODEL_NAME, 'frozen_inference_graph.pb')
 
 # Path to label map file
-PATH_TO_LABELS = os.path.join(CWD_PATH,'labelmap.pbtxt')
+PATH_TO_LABELS = os.path.join(CWD_PATH, 'labelmap.pbtxt')
 
 # Number of classes the object detector can identify
-NUM_CLASSES = 6
+NUM_CLASSES = 1
 
 ## Load the label map.
 # Label maps map indices to category names, so that when our convolution
@@ -54,7 +59,8 @@ NUM_CLASSES = 6
 # Here we use internal utility functions, but anything that returns a
 # dictionary mapping integers to appropriate string labels would be fine
 label_map = label_map_util.load_labelmap(PATH_TO_LABELS)
-categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=NUM_CLASSES, use_display_name=True)
+categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=NUM_CLASSES,
+                                                            use_display_name=True)
 category_index = label_map_util.create_category_index(categories)
 
 # Load the Tensorflow model into memory.
@@ -67,7 +73,6 @@ with detection_graph.as_default():
         tf.import_graph_def(od_graph_def, name='')
 
     sess = tf.Session(graph=detection_graph)
-
 
 # Define input and output tensors (i.e. data) for the object detection classifier
 
@@ -91,10 +96,7 @@ video = cv2.VideoCapture(0)
 # ret = video.set(3,1280)
 # ret = video.set(4,720)
 
-while(True):
-
-    # Acquire frame and expand frame dimensions to have shape: [1, None, None, 3]
-    # i.e. a single-column array, where each item in the column has the pixel RGB value
+while True:
     ret, frame = video.read()
     frame_expanded = np.expand_dims(frame, axis=0)
 
@@ -102,6 +104,23 @@ while(True):
     (boxes, scores, classes, num) = sess.run(
         [detection_boxes, detection_scores, detection_classes, num_detections],
         feed_dict={image_tensor: frame_expanded})
+
+    if scores[0][0] > 0.7:
+        height, width = frame.shape[:2]
+        current_time = timer
+        ymin = int(boxes[0][0][0] * height)
+        xmin = int(boxes[0][0][1] * width)
+        ymax = int(boxes[0][0][2] * height)
+        xmax = int(boxes[0][0][3] * width)
+        current_avg_cood = [(xmin + xmax) / 2, (ymin + ymax) / 2]
+        if prev_time is not None and prev_avg_cood is not None:
+            delta = math.sqrt(
+                (current_avg_cood[0] - prev_avg_cood[0]) ** 2 + (current_avg_cood[1] - prev_avg_cood[1]) ** 2)*2.54/96
+            speed = delta / (time.clock() - prev_time)
+            print(speed)
+
+        prev_time = time.clock()
+        prev_avg_cood = current_avg_cood
 
     # Draw the results of the detection (aka 'visulaize the results')
     vis_util.visualize_boxes_and_labels_on_image_array(
@@ -115,7 +134,7 @@ while(True):
         min_score_thresh=0.60)
 
     # All the results have been drawn on the frame, so it's time to display it.
-    cv2.imshow('Object detector', frame)
+    cv2.imshow('Gebbrish', frame)
 
     # Press 'q' to quit
     if cv2.waitKey(1) == ord('q'):
