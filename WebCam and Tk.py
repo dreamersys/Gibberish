@@ -1,8 +1,8 @@
 import PIL
 from PIL import Image, ImageTk
-import pytesseract
+# import pytesseract
 import cv2
-from Tkinter import *
+from tkinter import *
 
 width, height = 800, 600
 cap = cv2.VideoCapture(0)
@@ -13,6 +13,7 @@ root = Tk()
 root.bind('<Escape>', lambda e: root.quit())
 lmain = Label(root)
 lmain.pack()
+
 
 def show_frame():
     _, frame = cap.read()
