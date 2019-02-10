@@ -10,6 +10,14 @@ def btn_pause(v_in):
     threadPause = threading.Thread(target=v_in.set_pause)
     threadPause.start()
 
+def btn_resume(v_in):
+    threadresume = threading.Thread(target=v_in.set_pause)
+    threadresume.start()
+
+def btn_stop(v_in):
+    threadstop = threading.Thread(target=v_in.set_IsRecording)
+    threadstop.start()
+
 root = Tk()
 root.title("Image Loader")
 root.minsize(300, 300)
@@ -33,5 +41,11 @@ btn.pack(side="bottom", fill="both", expand="no", padx="10", pady="10")
 
 btn2 = Button(root, text="Pause", command=lambda: btn_pause(v_in))
 btn2.pack(side="bottom", fill="both", expand="no", padx="10", pady="5")
+
+btn2 = Button(root, text="Resume", command=lambda: btn_resume(v_in))
+btn2.pack(side="bottom", fill="both", expand="no", padx="10", pady="3")
+
+btn2 = Button(root, text="Stop", command=lambda: btn_stop(v_in))
+btn2.pack(side="bottom", fill="both", expand="no", padx="10", pady="0")
 
 root.mainloop()

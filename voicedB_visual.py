@@ -21,6 +21,12 @@ class voice_input():
     def set_pause(self):
         self.IsPause = True
 
+    def set_resume(self):
+        self.IsPause = False
+
+    def set_IsRecording(self):
+        self.IsRecording = False
+
     def print_amp_stat(self):
         last_key = self.Amplot.popitem()[0]
         print(last_key)
