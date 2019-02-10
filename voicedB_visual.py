@@ -111,7 +111,7 @@ class voice_input():
         ax.set_ylim(-150, 150)
         ax.set_xlim(0, self.CHUNK)
 
-        for i in range(1, 25):
+        for i in range(1, 250):
             if not self.IsPause:
                 # start the timer
                 t_elap = time.clock()
