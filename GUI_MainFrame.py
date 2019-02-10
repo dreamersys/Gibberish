@@ -32,11 +32,13 @@ screenshot_image=PhotoImage(file="./Source_Image/screenshot.png")
 screenshot_button=Button(lower_frame,image=screenshot_image, relief=SUNKEN, bg="#B3B3B3")
 screenshot_button.place(relx=0.9,rely=0, relheight=1)
 
+wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
+wave_label.place(relx=0.5, rely=0.25)
+
 
 def show_frame():
     _, frame = video.read()
-    treated_frm = cv2.flip(arm_detect(frame), 1)
-    cv2image = cv2.cvtColor(treated_frm, cv2.COLOR_BGR2RGBA)
+    cv2image = cv2.cvtColor(arm_detect(frame), cv2.COLOR_BGR2RGBA)
     img = PIL.Image.fromarray(cv2image)
     imgtk = ImageTk.PhotoImage(image=img)
     lmain.imgtk = imgtk
