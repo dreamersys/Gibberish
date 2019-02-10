@@ -8,7 +8,6 @@ import Voice_to_Text
 import threading
 import PIL
 from PIL import Image, ImageTk
-
 import matplotlib.pyplot as plt
 from collections import OrderedDict
 from Object_detection_webcam import arm_detect
@@ -22,14 +21,10 @@ root = Tk()
 root.title("Gibberish")
 ws = root.winfo_screenwidth()  # width of the screen
 hs = root.winfo_screenheight() # height of the screen
-
-# calculate x and y coordinates for the Tk root window
 x = (ws/2) - (WIDTH/2)
 y = (hs/2) - (HEIGHT/2)
-
-# set the dimensions of the screen
-# and where it is placed
 root.geometry('%dx%d+%d+%d' % (WIDTH, HEIGHT, x, y))
+
 canvas = Canvas(root, height=HEIGHT, width=WIDTH)
 canvas.pack()
 logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
@@ -45,7 +40,6 @@ def Start_Transcribing():
 
 def intro():
     def open_help():
-
         def show_help_buttons():
             about_button.place(rely=0.025, relx=0.875, relwidth=0.1, relheight=0.05)
             history_button.place(rely=0.125, relx=0.875, relwidth=0.1, relheight=0.05)
