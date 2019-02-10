@@ -321,7 +321,7 @@ def chapter3():
             self.controller = controller
             titleLabel = Label(self, text="Speech to Text", font=("Source Serif Variable",25))
             titleLabel.place(relx=0.5, rely=0.3, anchor="n")
-            with open("./Text.txt", "r") as f:
+            with open("./Test.txt", "r") as f:
                 Label(self, text=f.read(), wraplength=500).place(relx=0.5, rely=0.4, anchor="n")
             repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable",25))
             repeatedLabel.place(relx=0.45, rely=0.8, anchor="n")
