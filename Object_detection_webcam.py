@@ -3,13 +3,10 @@ import os
 import numpy as np
 import tensorflow as tf
 import math
+import time
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 
-
-
-prev_avg_cood = None
-prev_time = None
 MODEL_NAME = 'inference_graph/saved_model_0207/'
 CWD_PATH = os.getcwd()
 PATH_TO_CKPT = os.path.join(CWD_PATH, MODEL_NAME, 'frozen_inference_graph.pb')
@@ -38,33 +35,30 @@ detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
 num_detections = detection_graph.get_tensor_by_name('num_detections:0')
 
 
-def arm_detect(frame):
+def arm_detect(frame, prev_time, prev_avg_cood):
+    current_avg_cood = None
     frame_expanded = np.expand_dims(frame, axis=0)
-
     # Perform the actual detection by running the model with the image as input
     (boxes, scores, classes, num) = sess.run(
         [detection_boxes, detection_scores, detection_classes, num_detections],
         feed_dict={image_tensor: frame_expanded})
-    """"
+
     if scores[0][0] > 0.7:
         height, width = frame.shape[:2]
-        current_time = timer
         ymin = int(boxes[0][0][0] * height)
         xmin = int(boxes[0][0][1] * width)
         ymax = int(boxes[0][0][2] * height)
         xmax = int(boxes[0][0][3] * width)
         current_avg_cood = [(xmin + xmax) / 2, (ymin + ymax) / 2]
-        if prev_time is not None and prev_avg_cood is not None:
-            delta = math.sqrt(
-                (current_avg_cood[0] - prev_avg_cood[0]) ** 2 + (current_avg_cood[1] - prev_avg_cood[1]) ** 2)*2.54/96
-            speed = delta / (time.clock() - prev_time)
-            print(speed)
-
-        prev_time = time.clock()
-        prev_avg_cood = current_avg_cood
-    """
+        delta = math.sqrt(
+          (current_avg_cood[0] - prev_avg_cood[0]) ** 2 + (current_avg_cood[1] - prev_avg_cood[1]) ** 2) * 2.54 / 96
+        speed = delta / (time.clock() - prev_time)
+        print(speed)
+    else:
+        current_avg_cood = prev_avg_cood
 
     # Draw the results of the detection (aka 'visulaize the results')
+
     vis_util.visualize_boxes_and_labels_on_image_array(
         frame,
         np.squeeze(boxes),
@@ -75,5 +69,4 @@ def arm_detect(frame):
         line_thickness=8,
         min_score_thresh=0.60)
 
-    return frame
-
+    return frame, time.clock(), current_avg_cood
