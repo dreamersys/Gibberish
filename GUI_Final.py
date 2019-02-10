@@ -6,6 +6,8 @@ import Voice_to_Text
 import threading
 import PIL
 from PIL import Image, ImageTk
+import matplotlib.pyplot as plt
+from collections import OrderedDict
 from Object_detection_webcam import arm_detect
 
 WIDTH = 640 * 2
@@ -98,14 +100,17 @@ Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
 
 
 def chapter2():
+    d_speed = dict([(0, 0)])
     def show_frame():
+        d_temp = dict([(0, 0)])
         global prev_time, prev_avg_cood
         _, frame = video.read()
         height, width = frame.shape[:2]
         frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
         frame = cv2.flip(frame, 1)
         # print(prev_avg_cood)
-        img, prev_time, prev_avg_cood = arm_detect(frame, prev_time, prev_avg_cood)
+        img, prev_time, prev_avg_cood, d_temp = arm_detect(frame, prev_time, prev_avg_cood)
+        d_speed.update({d_temp.keys() : d_temp.values()})
         # print(prev_avg_cood)
         cv2image = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
         img = PIL.Image.fromarray(cv2image)
@@ -113,6 +118,9 @@ def chapter2():
         lmain.imgtk = imgtk
         lmain.configure(image=imgtk)
         lmain.after(10, show_frame)
+
+    for key, value in d_speed:
+        plt.plot(key, value)
 
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
