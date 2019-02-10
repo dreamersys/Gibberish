@@ -5,7 +5,7 @@ import tkFileDialog
 import cv2
 import time
 
-
+# Jkdajfka
 def select_image():
     # grab a reference to the image panels
     global panelA
