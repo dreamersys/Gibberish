@@ -205,7 +205,7 @@ def chapter3():
                                  command=lambda: controller.show_frame("PageOne"))
                 button2 = Button(self, text="Loudness", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement", font=("Source Serif Variable", 11),
+                button3 = Button(self, text="Sentiment", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageThree"))
                 button4 = Button(self, text="Speech", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageFour"))
@@ -230,7 +230,7 @@ def chapter3():
                                  command=lambda: controller.show_frame("PageOne"))
                 button2 = Button(self, text="Loudness", font=("Source Serif Variable", 20),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement", font=("Source Serif Variable", 11),
+                button3 = Button(self, text="Sentiment", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageThree"))
                 button4 = Button(self, text="Speech", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageFour"))
@@ -253,7 +253,7 @@ def chapter3():
                                  command=lambda: controller.show_frame("PageOne"))
                 button2 = Button(self, text="Loudness", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement", font=("Source Serif Variable", 20),
+                button3 = Button(self, text="Sentiment", font=("Source Serif Variable", 20),
                                  command=lambda: controller.show_frame("PageThree"))
                 button4 = Button(self, text="Speech", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageFour"))
@@ -264,8 +264,11 @@ def chapter3():
 
             Frame.__init__(self, parent)
             self.controller = controller
-            label = Label(self, text="This is Movement Page", font=controller.title_font)
-            label.place(relx=0.5, rely=0.5, anchor="n")
+            sentimentLabel = Label(self, text="Sentiment:", font=("Source Serif Variable", 25))
+            sentimentLabel.place(relx=0.5, rely=0.5, anchor="n")
+            with open("/Output Files/Attitude.txt", "r") as f:
+                Label(self, text=f.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.6, rely=0.5,
+                                                                                                     anchor="n")
             button_tab()
 
     class PageFour(Frame):
@@ -276,7 +279,7 @@ def chapter3():
                                  command=lambda: controller.show_frame("PageOne"))
                 button2 = Button(self, text="Loudness", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement", font=("Source Serif Variable", 11),
+                button3 = Button(self, text="Sentiment", font=("Source Serif Variable", 11),
                                  command=lambda: controller.show_frame("PageThree"))
                 button4 = Button(self, text="Speech", font=("Source Serif Variable", 20),
                                  command=lambda: controller.show_frame("PageFour"))
@@ -292,10 +295,11 @@ def chapter3():
             with open("/Output Files/Text.txt", "r") as f:
                 Label(self, text=f.read(), wraplength=500).place(relx=0.5, rely=0.4, anchor="n")
             repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable", 25))
-            repeatedLabel.place(relx=0.45, rely=0.8, anchor="n")
+            repeatedLabel.place(relx=0.45, rely=.8, anchor="n")
             with open("/Output Files/Repeated.txt", "r") as f:
-                Label(self, text=f.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.6, rely=0.8,
+                Label(self, text=f.read(), font=("Source Serif Variable", 25), wraplength=500).place(relx=0.6, rely=0.7,
                                                                                                      anchor="n")
+
             button_tab()
 
     if __name__ == "__main__":
