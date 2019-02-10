@@ -3,6 +3,8 @@ from tkinter import font
 
 root = Tk()
 root.title("Gibberish")
+canvas = Canvas(root, height=533.33 * 2, width=640 * 2)
+canvas.pack()
 logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
 
 
@@ -41,8 +43,8 @@ def intro():
         exit_button = Button(root, text="Exit")
         show_help_buttons()
 
-    canvas = Canvas(root, height=533.33 * 2, width=640 * 2)
-    canvas.pack()
+    # canvas = Canvas(root, height=533.33 * 2, width=640 * 2)
+    # canvas.pack()
 
     frame = Frame(root, bd=10)
     frame.place(relx=0.5, rely=0.1, relwidth=0.75, relheight=0.65, anchor="n")
@@ -76,8 +78,8 @@ screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
 
 
 def chapter2():
-    canvas = Canvas(root, height=533.33 * 2, width=640 * 2)
-    canvas.pack()
+    # canvas = Canvas(root, height=533.33 * 2, width=640 * 2)
+    # canvas.pack()
 
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
