@@ -1,9 +1,18 @@
 from tkinter import *
 from tkinter import font
+import cv2
+import time
+import PIL
+from PIL import Image, ImageTk
+from Object_detection_webcam import arm_detect
 
+WIDTH = 640 * 2
+HEIGHT = 533.33 * 2
+timer = time.clock()
+video = cv2.VideoCapture(0)
 root = Tk()
 root.title("Gibberish")
-canvas = Canvas(root, height=533.33 * 2, width=640 * 2)
+canvas = Canvas(root, height=HEIGHT, width=WIDTH)
 canvas.pack()
 logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
 
@@ -43,15 +52,11 @@ def intro():
         exit_button = Button(root, text="Exit")
         show_help_buttons()
 
-    # canvas = Canvas(root, height=533.33 * 2, width=640 * 2)
-    # canvas.pack()
-
     frame = Frame(root, bd=10)
     frame.place(relx=0.5, rely=0.1, relwidth=0.75, relheight=0.65, anchor="n")
     lower_frame = Frame(root, bd=5)
     lower_frame.place(relx=0.5, rely=0.5, relwidth=1, relheight=0.5, anchor="n")
 
-    # logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
     logo_label = Label(frame, image=logo_image)
     logo_label.place(relwidth=1, relheight=1)
     help_image = PhotoImage(file="./Source_Image/3lines.png")
@@ -78,11 +83,23 @@ screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
 
 
 def chapter2():
-    # canvas = Canvas(root, height=533.33 * 2, width=640 * 2)
-    # canvas.pack()
+    def show_frame():
+        _, frame = video.read()
+        height, width = frame.shape[:2]
+        frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
+        frame = cv2.flip(frame, 1)
+        cv2image = cv2.cvtColor(arm_detect(frame), cv2.COLOR_BGR2RGBA)
+        img = PIL.Image.fromarray(cv2image)
+        imgtk = ImageTk.PhotoImage(image=img)
+        lmain.imgtk = imgtk
+        lmain.configure(image=imgtk)
+        lmain.after(10, show_frame)
 
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
+
+    lmain = Label(frame)
+    lmain.pack()
 
     lower_frame = Frame(root, bd=10)
     lower_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.1, anchor="n")
@@ -108,6 +125,7 @@ def chapter2():
     wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
     wave_label.place(relx=0.5, rely=0.25)
 
+    show_frame()
 
 def chapter3():
     class StatFrame(Tk):

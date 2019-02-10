@@ -6,6 +6,8 @@ import math
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 
+
+
 prev_avg_cood = None
 prev_time = None
 MODEL_NAME = 'inference_graph/saved_model_0207/'
@@ -74,3 +76,4 @@ def arm_detect(frame):
         min_score_thresh=0.60)
 
     return frame
+
