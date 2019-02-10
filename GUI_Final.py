@@ -1,13 +1,12 @@
 from tkinter import *
 from tkinter import font
 
-
 root = Tk()
 root.title("Gibberish")
 logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
 
-def intro():
 
+def intro():
     def open_help():
         def show_help_buttons():
             about_button.place(rely=0.1, relx=0.85, relwidth=0.1, relheight=0.05)
@@ -42,7 +41,7 @@ def intro():
         exit_button = Button(root, text="Exit")
         show_help_buttons()
 
-    canvas = Canvas(root, height=533.33*2, width=640*2)
+    canvas = Canvas(root, height=533.33 * 2, width=640 * 2)
     canvas.pack()
 
     frame = Frame(root, bd=10)
@@ -50,7 +49,7 @@ def intro():
     lower_frame = Frame(root, bd=5)
     lower_frame.place(relx=0.5, rely=0.5, relwidth=1, relheight=0.5, anchor="n")
 
-    #logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
+    # logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
     logo_label = Label(frame, image=logo_image)
     logo_label.place(relwidth=1, relheight=1)
     help_image = PhotoImage(file="./Source_Image/3lines.png")
@@ -59,7 +58,8 @@ def intro():
     help_button = Button(root, image=help_image, relief=SUNKEN, command=open_help)
     help_button.place(relx=0.92, rely=0.05, relheight=0.027)
 
-    startButton = Button(lower_frame, text="Start", relief=SUNKEN, bg="#A2A2A2", command=lambda: (chapter2()),font=("Source Serif Variable", 20))
+    startButton = Button(lower_frame, text="Start", relief=SUNKEN, bg="#A2A2A2", command=lambda: (chapter2()),
+                         font=("Source Serif Variable", 20))
     startButton.place(relx=0.40, rely=0.4, relwidth=0.2, relheight=0.2)
 
     caption = Label(lower_frame, text="A software that makes us better speakers", font=("Source Serif Variable", 20))
@@ -69,12 +69,14 @@ def intro():
     team_name_label = Label(lower_frame, text="A product of D_Major", font=("Source Serif Variable", 11))
     team_name_label.place(relx=0.85, rely=0.90)
 
+
 pause_image = PhotoImage(file="./Source_Image/pause.png")
 stop_image = PhotoImage(file="./Source_Image/stop.png")
 screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
 
+
 def chapter2():
-    canvas = Canvas(root, height=533.33*2, width=640*2)
+    canvas = Canvas(root, height=533.33 * 2, width=640 * 2)
     canvas.pack()
 
     frame = Frame(root, bg="#80c1ff", bd=5)
@@ -103,6 +105,7 @@ def chapter2():
 
     wave_label = Label(lower_frame, text="HI THERE", bg="#ffffff")
     wave_label.place(relx=0.5, rely=0.25)
+
 
 def chapter3():
     class StatFrame(Tk):
@@ -159,7 +162,7 @@ def chapter3():
                 button5.place(rely=0.9, relx=0.8, relwidth=0.2, relheight=0.1)
 
             Frame.__init__(self, parent)
-            canvas = Canvas(self, height=400*2, width=640*2)
+            canvas = Canvas(self, height=400 * 2, width=640 * 2)
             canvas.pack()
             self.controller = controller
             label = Label(self, text="This is Overall Page", font=controller.title_font)
@@ -273,6 +276,7 @@ def chapter3():
     if __name__ == "__main__":
         app = StatFrame()
         app.mainloop()
+
 
 intro()
 
