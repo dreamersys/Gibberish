@@ -11,7 +11,8 @@ from PIL import Image, ImageTk
 
 WIDTH = 640 * 2
 HEIGHT = 533.33 * 2
-timer = time.clock()
+prev_time = 0
+prev_avg_cood = [0, 0]
 video = cv2.VideoCapture(0)
 root = Tk()
 root.title("Gibberish")
@@ -102,11 +103,15 @@ Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
 def chapter2():
     """"
     def show_frame():
+        global prev_time, prev_avg_cood
         _, frame = video.read()
         height, width = frame.shape[:2]
         frame = cv2.resize(frame, (0, 0), fx=WIDTH / width, fy=HEIGHT / height)
         frame = cv2.flip(frame, 1)
-        cv2image = cv2.cvtColor(arm_detect(frame), cv2.COLOR_BGR2RGBA)
+        # print(prev_avg_cood)
+        img, prev_time, prev_avg_cood = arm_detect(frame, prev_time, prev_avg_cood)
+        # print(prev_avg_cood)
+        cv2image = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
         img = PIL.Image.fromarray(cv2image)
         imgtk = ImageTk.PhotoImage(image=img)
         lmain.imgtk = imgtk
@@ -133,7 +138,7 @@ def chapter2():
     resume_button.place(relx=0.15, rely=0, relheight=1)
 
     # stop_image = PhotoImage(file="./Source_Image/stop.png")
-    stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: chapter3())
+    stop_button = Button(lower_frame, image=stop_image, relief="flat", command=lambda: (root.destroy(),chapter3()))
     stop_button.place(relx=0.2, rely=0, relheight=1)
 
     # screenshot_image = PhotoImage(file="./Source_Image/screenshot.png")
@@ -144,6 +149,7 @@ def chapter2():
     wave_label.place(relx=0.5, rely=0.25)
 
     # show_frame()
+
 
 
 def chapter3():
@@ -167,7 +173,7 @@ def chapter3():
             container.grid_columnconfigure(0, weight=1)
 
             self.frames = {}
-            for F in (PageOne, PageTwo, PageThree, PageFour, PageFive):
+            for F in (PageOne, PageTwo, PageThree, PageFour):
                 page_name = F.__name__
                 frame = F(parent=container, controller=self)
                 self.frames[page_name] = frame
@@ -188,49 +194,43 @@ def chapter3():
 
         def __init__(self, parent, controller):
             def button_tab():
-                button1 = Button(self, text="Overall",
+                button1 = Button(self, text="Overall", font=("Source Serif Variable",20),
                                  command=lambda: controller.show_frame("PageOne"))
-                button2 = Button(self, text="Loudness",
+                button2 = Button(self, text="Loudness",font=("Source Serif Variable",11),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement",
+                button3 = Button(self, text="Movement",font=("Source Serif Variable",11),
                                  command=lambda: controller.show_frame("PageThree"))
-                button4 = Button(self, text="Speech Repetition",
+                button4 = Button(self, text="Speech",font=("Source Serif Variable",11),
                                  command=lambda: controller.show_frame("PageFour"))
-                button5 = Button(self, text="Speech to Text",
-                                 command=lambda: controller.show_frame("PageFive"))
-                button1.place(rely=0.88, relx=0, relwidth=0.2, relheight=0.12)
-                button2.place(rely=0.9, relx=0.2, relwidth=0.2, relheight=0.1)
-                button3.place(rely=0.9, relx=0.4, relwidth=0.2, relheight=0.1)
-                button4.place(rely=0.9, relx=0.6, relwidth=0.2, relheight=0.1)
-                button5.place(rely=0.9, relx=0.8, relwidth=0.2, relheight=0.1)
+                button1.place(rely=0.88, relx=0, relwidth=0.25, relheight=0.12)
+                button2.place(rely=0.9, relx=0.25, relwidth=0.25, relheight=0.1)
+                button3.place(rely=0.9, relx=0.5, relwidth=0.25, relheight=0.1)
+                button4.place(rely=0.9, relx=0.75, relwidth=0.25, relheight=0.1)
 
             Frame.__init__(self, parent)
             canvas = Canvas(self, height=400 * 2, width=640 * 2)
             canvas.pack()
             self.controller = controller
-            label = Label(self, text="This is Overall Page", font=controller.title_font)
-            label.place(relx=0.5, rely=0.5, anchor="n")
+            label = Label(self, text="69", font=("Source Serif Variable",150), fg="#FF0000")
+            label.place(relx=0.5, rely=0.4, anchor="n")
             button_tab()
 
     class PageTwo(Frame):
 
         def __init__(self, parent, controller):
             def button_tab():
-                button1 = Button(self, text="Overall",
+                button1 = Button(self, text="Overall",font=("Source Serif Variable",11),
                                  command=lambda: controller.show_frame("PageOne"))
-                button2 = Button(self, text="Loudness",
+                button2 = Button(self, text="Loudness",font=("Source Serif Variable",20),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement",
+                button3 = Button(self, text="Movement",font=("Source Serif Variable",11),
                                  command=lambda: controller.show_frame("PageThree"))
-                button4 = Button(self, text="Speech Repetition",
+                button4 = Button(self, text="Speech",font=("Source Serif Variable",11),
                                  command=lambda: controller.show_frame("PageFour"))
-                button5 = Button(self, text="Speech to Text",
-                                 command=lambda: controller.show_frame("PageFive"))
-                button1.place(rely=0.9, relx=0, relwidth=0.2, relheight=0.1)
-                button2.place(rely=0.88, relx=0.2, relwidth=0.2, relheight=0.12)
-                button3.place(rely=0.9, relx=0.4, relwidth=0.2, relheight=0.1)
-                button4.place(rely=0.9, relx=0.6, relwidth=0.2, relheight=0.1)
-                button5.place(rely=0.9, relx=0.8, relwidth=0.2, relheight=0.1)
+                button1.place(rely=0.9, relx=0, relwidth=0.25, relheight=0.1)
+                button2.place(rely=0.88, relx=0.25, relwidth=0.25, relheight=0.12)
+                button3.place(rely=0.9, relx=0.5, relwidth=0.25, relheight=0.1)
+                button4.place(rely=0.9, relx=0.75, relwidth=0.25, relheight=0.1)
 
             Frame.__init__(self, parent)
             self.controller = controller
@@ -242,21 +242,18 @@ def chapter3():
 
         def __init__(self, parent, controller):
             def button_tab():
-                button1 = Button(self, text="Overall",
+                button1 = Button(self, text="Overall",font=("Source Serif Variable",11),
                                  command=lambda: controller.show_frame("PageOne"))
-                button2 = Button(self, text="Loudness",
+                button2 = Button(self, text="Loudness",font=("Source Serif Variable",11),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement",
+                button3 = Button(self, text="Movement",font=("Source Serif Variable",20),
                                  command=lambda: controller.show_frame("PageThree"))
-                button4 = Button(self, text="Speech Repetition",
+                button4 = Button(self, text="Speech",font=("Source Serif Variable",11),
                                  command=lambda: controller.show_frame("PageFour"))
-                button5 = Button(self, text="Speech to Text",
-                                 command=lambda: controller.show_frame("PageFive"))
-                button1.place(rely=0.9, relx=0, relwidth=0.2, relheight=0.1)
-                button2.place(rely=0.9, relx=0.2, relwidth=0.2, relheight=0.1)
-                button3.place(rely=0.88, relx=0.4, relwidth=0.2, relheight=0.12)
-                button4.place(rely=0.9, relx=0.6, relwidth=0.2, relheight=0.1)
-                button5.place(rely=0.9, relx=0.8, relwidth=0.2, relheight=0.1)
+                button1.place(rely=0.9, relx=0, relwidth=0.25, relheight=0.1)
+                button2.place(rely=0.9, relx=0.25, relwidth=0.25, relheight=0.1)
+                button3.place(rely=0.88, relx=0.5, relwidth=0.25, relheight=0.12)
+                button4.place(rely=0.9, relx=0.75, relwidth=0.25, relheight=0.1)
 
             Frame.__init__(self, parent)
             self.controller = controller
@@ -268,52 +265,28 @@ def chapter3():
 
         def __init__(self, parent, controller):
             def button_tab():
-                button1 = Button(self, text="Overall",
+                button1 = Button(self, text="Overall",font=("Source Serif Variable",11),
                                  command=lambda: controller.show_frame("PageOne"))
-                button2 = Button(self, text="Loudness",
+                button2 = Button(self, text="Loudness",font=("Source Serif Variable",11),
                                  command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement",
+                button3 = Button(self, text="Movement",font=("Source Serif Variable",11),
                                  command=lambda: controller.show_frame("PageThree"))
-                button4 = Button(self, text="Speech Repetition",
+                button4 = Button(self, text="Speech",font=("Source Serif Variable",20),
                                  command=lambda: controller.show_frame("PageFour"))
-                button5 = Button(self, text="Speech to Text",
-                                 command=lambda: controller.show_frame("PageFive"))
-                button1.place(rely=0.9, relx=0, relwidth=0.2, relheight=0.1)
-                button2.place(rely=0.9, relx=0.2, relwidth=0.2, relheight=0.1)
-                button3.place(rely=0.9, relx=0.4, relwidth=0.2, relheight=0.1)
-                button4.place(rely=0.88, relx=0.6, relwidth=0.2, relheight=0.12)
-                button5.place(rely=0.9, relx=0.8, relwidth=0.2, relheight=0.1)
-
+                button1.place(rely=0.9, relx=0, relwidth=0.25, relheight=0.1)
+                button2.place(rely=0.9, relx=0.25, relwidth=0.25, relheight=0.1)
+                button3.place(rely=0.9, relx=0.5, relwidth=0.25, relheight=0.1)
+                button4.place(rely=0.88, relx=0.75, relwidth=0.25, relheight=0.12)
             Frame.__init__(self, parent)
             self.controller = controller
-            label = Label(self, text="This is Speech Repetition Page", font=controller.title_font)
-            label.place(relx=0.5, rely=0.5, anchor="n")
-            button_tab()
-
-    class PageFive(Frame):
-
-        def __init__(self, parent, controller):
-            def button_tab():
-                button1 = Button(self, text="Overall",
-                                 command=lambda: controller.show_frame("PageOne"))
-                button2 = Button(self, text="Loudness",
-                                 command=lambda: controller.show_frame("PageTwo"))
-                button3 = Button(self, text="Movement",
-                                 command=lambda: controller.show_frame("PageThree"))
-                button4 = Button(self, text="Speech Repetition",
-                                 command=lambda: controller.show_frame("PageFour"))
-                button5 = Button(self, text="Speech to Text",
-                                 command=lambda: controller.show_frame("PageFive"))
-                button1.place(rely=0.9, relx=0, relwidth=0.2, relheight=0.1)
-                button2.place(rely=0.9, relx=0.2, relwidth=0.2, relheight=0.1)
-                button3.place(rely=0.9, relx=0.4, relwidth=0.2, relheight=0.1)
-                button4.place(rely=0.9, relx=0.6, relwidth=0.2, relheight=0.1)
-                button5.place(rely=0.88, relx=0.8, relwidth=0.2, relheight=0.12)
-
-            Frame.__init__(self, parent)
-            self.controller = controller
-            label = Label(self, text="This is Speech to Text Page", font=controller.title_font)
-            label.place(relx=0.5, rely=0.5, anchor="n")
+            titleLabel = Label(self, text="Speech to Text", font=("Source Serif Variable",25))
+            titleLabel.place(relx=0.5, rely=0.3, anchor="n")
+            with open("./Text.txt", "r") as f:
+                Label(self, text=f.read(), wraplength=500).place(relx=0.5, rely=0.4, anchor="n")
+            repeatedLabel = Label(self, text="Number of repeated words :", font=("Source Serif Variable",25))
+            repeatedLabel.place(relx=0.45, rely=0.8, anchor="n")
+            with open("./Repeated.txt", "r") as f:
+                Label(self, text=f.read(), font=("Source Serif Variable",25),wraplength=500).place(relx=0.6, rely=0.8,anchor="n")
             button_tab()
 
     if __name__ == "__main__":
