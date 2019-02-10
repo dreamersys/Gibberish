@@ -102,7 +102,7 @@ def chapter2():
     d_speed = dict([(0, 0)])
     speed = 0
     def show_frame():
-        d_temp = {0: 0}
+        speed_temp = 0
         global prev_time, prev_avg_cood
         _, frame = video.read()
         height, width = frame.shape[:2]
@@ -110,10 +110,8 @@ def chapter2():
         frame = cv2.flip(frame, 1)
         # print(prev_avg_cood)
         img, prev_time, prev_avg_cood, d_temp = arm_detect(frame, prev_time, prev_avg_cood, speed)
+        d_speed.update({prev_time: speed_temp})
 
-        temp_key=int(d_temp.keys())
-        temp_val=int(d_temp.values())
-        d_speed.update({temp_key : temp_val})
         # print(prev_avg_cood)
         cv2image = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
         img = PIL.Image.fromarray(cv2image)
