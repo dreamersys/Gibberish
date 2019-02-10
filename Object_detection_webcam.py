@@ -69,5 +69,5 @@ def arm_detect(frame, prev_time, prev_avg_cood, speed):
         line_thickness=8,
         min_score_thresh=0.60)
 
-
     return frame, time.clock(), current_avg_cood, speed
+

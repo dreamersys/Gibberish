@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('TkAgg')
 from tkinter import *
 from tkinter import font
 import cv2
@@ -6,6 +8,7 @@ import Voice_to_Text
 import threading
 import PIL
 from PIL import Image, ImageTk
+
 import matplotlib.pyplot as plt
 from collections import OrderedDict
 from Object_detection_webcam import arm_detect
@@ -30,6 +33,8 @@ root.geometry('%dx%d+%d+%d' % (WIDTH, HEIGHT, x, y))
 canvas = Canvas(root, height=HEIGHT, width=WIDTH)
 canvas.pack()
 logo_image = PhotoImage(file="./Source_Image/GibberishLogo.png")
+logo_image = logo_image.zoom(35)
+logo_image = logo_image.subsample(30)
 
 
 def Start_Transcribing():
@@ -40,6 +45,7 @@ def Start_Transcribing():
 
 def intro():
     def open_help():
+
         def show_help_buttons():
             about_button.place(rely=0.025, relx=0.875, relwidth=0.1, relheight=0.05)
             history_button.place(rely=0.125, relx=0.875, relwidth=0.1, relheight=0.05)
@@ -56,17 +62,17 @@ def intro():
         arrow_button.place(relx=0.82, rely=0.05, relheight=0.027)
         help_desk = Label(root, bg="#E5E5E5")
         help_desk.place(relx=0.85, relwidth=0.15, relheight=0.3)
-        about_button = Button(root, text="About", relief="flat", bg="#E5E5E5", font=("Source Serif Variable", 15, "bold"))
+        about_button = Button(root, text="About", relief="flat", bg="#E5E5E5", font=("Source Serif Variable", 15))
         history_button = Button(root, text="History", relief="flat", bg="#E5E5E5", font=("Source Serif Variable", 15))
         exit_button = Button(root, text="Exit", relief="flat", bg="#E5E5E5", font=("Source Serif Variable", 15))
         show_help_buttons()
 
-    frame = Frame(root, bd=10)
+    frame = Frame(root)
     frame.place(relx=0.5, rely=0.1, relwidth=0.75, relheight=0.65, anchor="n")
-    lower_frame = Frame(root, bd=5)
+    lower_frame = Frame(root)
     lower_frame.place(relx=0.5, rely=0.5, relwidth=1, relheight=0.5, anchor="n")
 
-    logo_label = Label(frame, image=logo_image)
+    logo_label = Label(frame, image=logo_image, relief="flat")
     logo_label.place(relwidth=1, relheight=1)
     help_image = PhotoImage(file="./Source_Image/3lines.png")
     help_image = help_image.zoom(15)
@@ -78,8 +84,8 @@ def intro():
                                                                                                   Start_Transcribing(),
                                                                                                   os.system(
                                                                                                       "python voicedB_visual.py\\")
-                                                                                                  ),font=("Source Serif Variable", 20))
-    startButton.place(relx=0.40, rely=0.4, relwidth=0.2, relheight=0.2)
+                                                                                                  ),font=("Source Serif Variable", 30))
+    startButton.place(relx=0.40, rely=0.35, relwidth=0.2, relheight=0.2)
 
     version_label = Label(lower_frame, text="V1.0.0", font=("Source Serif Variable", 11))
     version_label.place(relx=0.05, rely=0.90)
@@ -98,6 +104,7 @@ Voice_to_Text.count_repeated_words("Test.txt", "Repeated.txt")
 def chapter2():
     d_speed = dict([(0, 0)])
     speed = 0
+
     def show_frame():
         speed_temp = 0
         global prev_time, prev_avg_cood
@@ -107,8 +114,6 @@ def chapter2():
         frame = cv2.flip(frame, 1)
         # print(prev_avg_cood)
         img, prev_time, prev_avg_cood, speed_temp = arm_detect(frame, prev_time, prev_avg_cood, speed)
-
-
         d_speed.update({prev_time: speed_temp})
 
         # print(prev_avg_cood)
@@ -118,9 +123,6 @@ def chapter2():
         lmain.imgtk = imgtk
         lmain.configure(image=imgtk)
         lmain.after(10, show_frame)
-
-    for key, value in d_speed.items():
-        plt.plot(key, value)
 
     frame = Frame(root, bg="#80c1ff", bd=5)
     frame.place(relx=0.5, rely=0, relwidth=1, relheight=0.9, anchor="n")
@@ -142,8 +144,13 @@ def chapter2():
 
     show_frame()
 
+    def show_plot():
+        for key, value in d_speed.items():
+            plt.plot(key, value)
+            plt.show()
 
 def chapter3():
+    chapter2().showplot()
     class StatFrame(Tk):
         def __init__(self, *args, **kwargs):
             Tk.__init__(self, *args, **kwargs)
