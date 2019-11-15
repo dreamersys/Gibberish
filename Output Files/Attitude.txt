@@ -1,0 +1,7 @@
+1) If Score <= 0.1, it is negative attitude.
+2) If -0.1 < Score < 0.1 and , it is negative attitude.
+3) If Score >= 0.1, it is positive attitude.
+
+
+Your score is: -0.10000000149011612
+Overall, you expressed NEGATIVE attitude in speech.
