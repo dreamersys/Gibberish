@@ -1,0 +1,7 @@
+
+.idea/
+*.xml
+*.iml
+*.pyc
+*.png
+Output Files/.DS_Store
